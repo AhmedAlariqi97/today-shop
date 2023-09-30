@@ -44,6 +44,7 @@ Route::group(['prefix' => '/admin'], function(){
         Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
         Route::get('/categories/{category}/edite', [CategoryController::class, 'edite'])->name('categories.edite');
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
 
 
         // temp-images.create
@@ -60,6 +61,12 @@ Route::group(['prefix' => '/admin'], function(){
                 'slug' => $slug
             ]);
         })->name('getSlug');
+
+        // Route for storing the file input content in the session
+        Route::post('/store-file-content', 'Categories@storeFileContent')->name('storeFileContent');
+
+          // Route for auto-complete functionality
+        Route::get('/autocomplete', 'Categories@autocomplete')->name('autocomplete');
     });
 });
 

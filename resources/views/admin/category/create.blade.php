@@ -38,6 +38,16 @@
                             </div>
 
                         </div>
+                        <!-- <div class="col-md-6">
+                            <form id="fileInputForm">
+                                @csrf
+                                <input type="file" id="fileInput" name="file" />
+                                <button type="submit">Submit</button>
+                            </form>
+
+                            <input type="text" id="autocompleteInput" name="autocomplete" />
+
+                        </div> -->
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <input type="hidden" id="image_id" name="image_id" value="">
@@ -81,7 +91,7 @@
     $("#categoryForm").submit(function(event) {
         event.preventDefault();
         var element = $(this);
-        $("button[type=submit]").prop('disabled',true);
+        $("button[type=submit]").prop('disabled', true);
 
         $.ajax({
             url: '{{ route("categories.store") }}',
@@ -89,11 +99,11 @@
             data: element.serializeArray(),
             dataType: 'json',
             success: function(response) {
-                $("button[type=submit]").prop('disabled',false);
+                $("button[type=submit]").prop('disabled', false);
 
                 if (response["status"] == true) {
 
-                    window.location.href="{{ route('categories.index') }}";
+                    window.location.href = "{{ route('categories.index') }}";
 
                     $("#name").removeClass('is-invalid')
                         .siblings('p')
@@ -144,18 +154,39 @@
         $.ajax({
             url: '{{ route("getSlug") }}',
             type: 'get',
-            data: { title: element.val() },
+            data: {
+                title: element.val()
+            },
             dataType: 'json',
             success: function(response) {
                 // $("button[type=submit]").prop('disabled',false);
 
-                if(response["status"] == true) {
+                if (response["status"] == true) {
                     $("#slug").val(response["slug"]);
                 }
-          }
+            }
         });
 
     });
+
+    // $(document).ready(function() {
+    //     $('#fileInputForm').submit(function(e) {
+    //         e.preventDefault();
+
+    //         var formData = new FormData(this);
+
+    //         $.ajax({
+    //             url: "{{ route('storeFileContent') }}",
+    //             type: 'POST',
+    //             data: formData,
+    //             processData: false,
+    //             contentType: false,
+    //             success: function(response) {
+    //                 console.log('File content stored in session');
+    //             }
+    //         });
+    //     });
+    // });
 
     // dropZone
 
@@ -177,7 +208,8 @@
         acceptedFiles: "image/jpeg,image/png,image/gif,imgae/svg",
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }, success: function(file, response){
+        },
+        success: function(file, response) {
             $("#image_id").val(response.image_id);
             //console.log(response);
         }
@@ -185,27 +217,21 @@
 
     //dropzone multi-images
 
-//     Dropzone.autoDiscover = false;
-//     const dropzone = new Dropzone("#image", {
-//     url: "{{ route('temp-images.create') }}",
-//     maxFiles: 5, // Set the maximum number of files to be uploaded
-//     paramName: 'image',
-//     addRemoveLinks: true,
-//     acceptedFiles: "image/jpeg,image/png,image/gif,imgae/svg",
-//     headers: {
-//         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//     },
-//     success: function(file, response) {
-//         $("#image_id").val(response.image_id);
-//         //console.log(response);
-//     }
-// });
-
-
-
-
-
-
+    //     Dropzone.autoDiscover = false;
+    //     const dropzone = new Dropzone("#image", {
+    //     url: "{{ route('temp-images.create') }}",
+    //     maxFiles: 5, // Set the maximum number of files to be uploaded
+    //     paramName: 'image',
+    //     addRemoveLinks: true,
+    //     acceptedFiles: "image/jpeg,image/png,image/gif,imgae/svg",
+    //     headers: {
+    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //     },
+    //     success: function(file, response) {
+    //         $("#image_id").val(response.image_id);
+    //         //console.log(response);
+    //     }
+    // });
 </script>
 
 @endsection

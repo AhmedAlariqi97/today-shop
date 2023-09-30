@@ -1,6 +1,4 @@
-@extends('back.layout.pages-layout')
-@section('title', 'dashboard')
-{{-- content of categories page --}}
+@extends('admin.layouts.pages-layout')
 
 @section('content')
 <!-- Content Header (Page header) -->
@@ -163,45 +161,45 @@
 
     // dropzone single image
 
-    // Dropzone.autoDiscover = false;
-    // const dropzone = $("#image").dropzone({
-    //     init: function() {
-    //         this.on('addedfile', function(file) {
-    //             if (this.files.length > 1) {
-    //                 this.removeFile(this.files[0]);
-    //             }
-    //         });
-    //     },
-    //     url: "{{ route('temp-images.create') }}",
-    //     maxFiles: 1,
-    //     paramName: 'image',
-    //     addRemoveLinks: true,
-    //     acceptedFiles: "image/jpeg,image/png,image/gif,imgae/svg",
-    //     headers: {
-    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     }, success: function(file, response){
-    //         $("#image_id").val(response.image_id);
-    //         //console.log(response);
-    //     }
-    // });
+    Dropzone.autoDiscover = false;
+    const dropzone = $("#image").dropzone({
+        init: function() {
+            this.on('addedfile', function(file) {
+                if (this.files.length > 1) {
+                    this.removeFile(this.files[0]);
+                }
+            });
+        },
+        url: "{{ route('temp-images.create') }}",
+        maxFiles: 1,
+        paramName: 'image',
+        addRemoveLinks: true,
+        acceptedFiles: "image/jpeg,image/png,image/gif,imgae/svg",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }, success: function(file, response){
+            $("#image_id").val(response.image_id);
+            //console.log(response);
+        }
+    });
 
     //dropzone multi-images
 
-    Dropzone.autoDiscover = false;
-    const dropzone = new Dropzone("#image", {
-    url: "{{ route('temp-images.create') }}",
-    maxFiles: 5, // Set the maximum number of files to be uploaded
-    paramName: 'image',
-    addRemoveLinks: true,
-    acceptedFiles: "image/jpeg,image/png,image/gif,imgae/svg",
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-    success: function(file, response) {
-        $("#image_id").val(response.image_id);
-        //console.log(response);
-    }
-});
+//     Dropzone.autoDiscover = false;
+//     const dropzone = new Dropzone("#image", {
+//     url: "{{ route('temp-images.create') }}",
+//     maxFiles: 5, // Set the maximum number of files to be uploaded
+//     paramName: 'image',
+//     addRemoveLinks: true,
+//     acceptedFiles: "image/jpeg,image/png,image/gif,imgae/svg",
+//     headers: {
+//         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//     },
+//     success: function(file, response) {
+//         $("#image_id").val(response.image_id);
+//         //console.log(response);
+//     }
+// });
 
 
 

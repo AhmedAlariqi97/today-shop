@@ -1,7 +1,5 @@
 
-@extends('back.layout.pages-layout')
-@section('title', 'dashboard')
-{{-- content of dashboard page --}}
+@extends('admin.layouts.pages-layout')
 
 @section('content')
 

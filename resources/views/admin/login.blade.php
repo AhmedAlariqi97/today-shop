@@ -1,4 +1,4 @@
-@extends('back.layout.auth-layout')
+@extends('admin.layouts.auth-layout')
 @section('title', 'login')
 {{-- content of login page --}}
 

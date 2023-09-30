@@ -38,16 +38,18 @@ Route::group(['prefix' => '/admin'], function(){
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/logout', [DashboardController::class, 'logout'])->name('admin.logout');
 
-        //categories route
+        //category route
         Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
         Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
         Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+        Route::get('/categories/{category}/edite', [CategoryController::class, 'edite'])->name('categories.edite');
+        Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
 
 
         // temp-images.create
         Route::post('/temp', [TempImagesController::class, 'create'])->name('temp-images.create');
 
-        Route::get('/getSlug', function (Request $request) {
+        Route::get('/getSlug',function(Request $request) {
             $slug = '';
             if (!empty($request->title)) {
                 $slug = Str::slug($request->title);

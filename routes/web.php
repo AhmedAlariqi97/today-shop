@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,14 @@ Route::group(['prefix' => '/admin'], function(){
         Route::get('/categories/{category}/edite', [CategoryController::class, 'edite'])->name('categories.edite');
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
+
+        //aub category route
+        Route::get('/subcategories', [SubCategoryController::class, 'index'])->name('sub-categories.index');
+        Route::get('/subcategories/create', [SubCategoryController::class, 'create'])->name('sub-categories.create');
+        Route::post('/subcategories', [SubCategoryController::class, 'store'])->name('sub-categories.store');
+        Route::get('/subcategories/{subCategory}/edite', [SubCategoryController::class, 'edite'])->name('sub-categories.edite');
+        Route::put('/subcategories/{subCategory}', [SubCategoryController::class, 'update'])->name('sub-categories.update');
+        Route::delete('/subcategories/{subCategory}', [SubCategoryController::class, 'destroy'])->name('sub-categories.delete');
 
 
         // temp-images.create

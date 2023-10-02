@@ -96,17 +96,24 @@ class SubCategoryController extends Controller
 
     }
 
-    public function edite ($subCategoryId, Request $request) {
+    public function edite ($Id, Request $request) {
+        $subCategory = SubCategory::find('Id');
+        if (empty($subCategory)) {
+            $request->session()->flash('error','Record not found');
+            return redirect()->route('sub-categories.index');
+        }
+
         $categories = Category::orderBy('name','ASC')->get();
         $data['categories'] = $categories;
-       
+        $data['subCategory'] = $subCategory;
         return View('admin.sub_category.edite',$data);
     }
 
-    public function update ($subCategoryId, Request $request) {
+    public function update ($Id, Request $request) {
 
-        $subCategory = subCategory::find($subCategoryId);
+        $subCategory = SubCategory::find($Id);
         if (empty($subCategory)) {
+            $request->session()->flash('error','Record not found');
             return response()->json([
                 'status' => false,
                 'notFound' => true,
@@ -116,19 +123,18 @@ class SubCategoryController extends Controller
 
         $validator = Validator::make($request->all(),[
             'name' => 'required',
-            // 'slug' => 'required|unique:categories,slug'.$category->id.',id'
-            'slug' => 'required'
+            'slug' => 'required',
+            'category' => 'required',
+            'status' => 'required'
         ]);
 
         if ($validator->passes()) {
 
-
-            $subcategory = new SubCategory();
-            $subcategory->name = $request->name;
-            $subcategory->slug = $request->slug;
-            $subcategory->status = $request->status;
-            $subcategory->category_id = $request->category;
-            $subcategory->save();
+            $$subCategory->name = $request->name;
+            $$subCategory->slug = $request->slug;
+            $$subCategory->status = $request->status;
+            $$subCategory->category_id = $request->category;
+            $$subCategory->save();
 
 
             $request->session()->flash('success','Sub Category updated successful');
@@ -146,9 +152,9 @@ class SubCategoryController extends Controller
         }
     }
 
-    public function destroy ($subCategoryId, Request $request) {
+    public function destroy ($Id, Request $request) {
 
-        $subCategory = Category::find($subCategoryId);
+        $subCategory = SubCategory::find($Id);
         if (empty($subCategory)) {
             return redirect()->route('sub-categories.index');
         }

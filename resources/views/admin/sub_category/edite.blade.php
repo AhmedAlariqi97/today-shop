@@ -28,9 +28,10 @@
                                 <label for="name">Category</label>
                                 <select name="category" id="category" class="form-control">
                                     <option value="">Select a category</option>
-                                    @if($subcategory->isNotEmpty())
-                                    @foreach ($subcategory as $subcategory)
-                                    <option value="{{ $category->id }}">{{ $subcategory->name }}</option>
+                                    @if($categories->isNotEmpty())
+                                    @foreach ($categories as $category)
+                                    <option {{ ($subCategory->category_id == category->id ) ? 'selected' : '' }}
+                                         value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                     @endif
                                 </select>
@@ -41,7 +42,7 @@
                             <div class="mb-3">
                                 <label for="name">Name</label>
                                 <input type="text" name="name" id="name" class="form-control" placeholder="Name"
-                                 value="{{ $subcategory->name }}">
+                                 value="{{ $subCategory->name }}">
                                 <p></p>
                             </div>
                         </div>
@@ -49,7 +50,7 @@
                             <div class="mb-3">
                                 <label for="slug">Slug</label>
                                 <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug"
-                                  value="{{ $subcategory->slug }}">
+                                  value="{{ $subCategory->slug }}">
                                 <p></p>
                             </div>
 
@@ -59,8 +60,8 @@
                             <div class="mb-3">
                                 <label for="status">Status</label>
                                 <select name="status" id="status" class="form-control">
-                                    <option {{ ($subcategory->status == 1 ) ? 'selected' : '' }} value="1">Active</option>
-                                    <option {{ ($subcategory->status == 0 ) ? 'selected' : '' }} value="0">Block</option>
+                                    <option {{ ($subCategory->status == 1 ) ? 'selected' : '' }} value="1">Active</option>
+                                    <option {{ ($subCategory->status == 0 ) ? 'selected' : '' }} value="0">Block</option>
                                 </select>
                             </div>
                         </div>
@@ -90,7 +91,7 @@
         $("button[type=submit]").prop('disabled',true);
 
         $.ajax({
-            url: '{{ route("sub-categories.update",$subcategory->id) }}',
+            url: '{{ route("sub-categories.update",$subCategory->id) }}',
             type: 'put',
             data: element.serializeArray(),
             dataType: 'json',

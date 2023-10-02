@@ -97,7 +97,7 @@ class SubCategoryController extends Controller
     }
 
     public function edite ($Id, Request $request) {
-        $subCategory = SubCategory::find('Id');
+        $subCategory = SubCategory::find($Id);
         if (empty($subCategory)) {
             $request->session()->flash('error','Record not found');
             return redirect()->route('sub-categories.index');
@@ -112,8 +112,10 @@ class SubCategoryController extends Controller
     public function update ($Id, Request $request) {
 
         $subCategory = SubCategory::find($Id);
+
         if (empty($subCategory)) {
             $request->session()->flash('error','Record not found');
+            // if the record delete it form database
             return response()->json([
                 'status' => false,
                 'notFound' => true,
@@ -130,11 +132,11 @@ class SubCategoryController extends Controller
 
         if ($validator->passes()) {
 
-            $$subCategory->name = $request->name;
-            $$subCategory->slug = $request->slug;
-            $$subCategory->status = $request->status;
-            $$subCategory->category_id = $request->category;
-            $$subCategory->save();
+            $subCategory->name = $request->name;
+            $subCategory->slug = $request->slug;
+            $subCategory->status = $request->status;
+            $subCategory->category_id = $request->category;
+            $subCategory->save();
 
 
             $request->session()->flash('success','Sub Category updated successful');
@@ -156,7 +158,14 @@ class SubCategoryController extends Controller
 
         $subCategory = SubCategory::find($Id);
         if (empty($subCategory)) {
-            return redirect()->route('sub-categories.index');
+            $request->session()->flash('error','Record not found');
+            // return redirect()->route('sub-categories.index');
+            // if the record delete it form database
+            return response()->json([
+                'status' => false,
+                'notFound' => true,
+                'message' => 'Sub Category not found'
+             ]);
         }
 
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminLoginController;
+use App\Http\Controllers\admin\BrandsController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\SubCategoryController;
@@ -47,13 +48,21 @@ Route::group(['prefix' => '/admin'], function(){
         Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
 
-        //aub category route
+        //sub category route
         Route::get('/subcategories', [SubCategoryController::class, 'index'])->name('sub-categories.index');
         Route::get('/subcategories/create', [SubCategoryController::class, 'create'])->name('sub-categories.create');
         Route::post('/subcategories', [SubCategoryController::class, 'store'])->name('sub-categories.store');
         Route::get('/subcategories/{subCategory}/edite', [SubCategoryController::class, 'edite'])->name('sub-categories.edite');
         Route::put('/subcategories/{subCategory}', [SubCategoryController::class, 'update'])->name('sub-categories.update');
         Route::delete('/subcategories/{subCategory}', [SubCategoryController::class, 'destroy'])->name('sub-categories.delete');
+
+         //brand route
+         Route::get('/brands', [BrandsController::class, 'index'])->name('brands.index');
+         Route::get('/brands/create', [BrandsController::class, 'create'])->name('brands.create');
+         Route::post('/brands', [BrandsController::class, 'store'])->name('brands.store');
+         Route::get('/brands/{brand}/edite', [BrandsController::class, 'edite'])->name('brands.edite');
+         Route::put('/brands/{brand}', [BrandsController::class, 'update'])->name('brands.update');
+         Route::delete('/brands/{brand}', [BrandsController::class, 'destroy'])->name('brands.delete');
 
 
         // temp-images.create

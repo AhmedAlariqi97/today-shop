@@ -104,6 +104,7 @@ class CategoryController extends Controller
 
         $category = Category::find($categoryId);
         if (empty($category)) {
+            // if the record delete it form database
             return response()->json([
                 'status' => false,
                 'notFound' => true,

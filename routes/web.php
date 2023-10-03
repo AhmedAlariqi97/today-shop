@@ -4,8 +4,10 @@ use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\BrandsController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\ProductSubCategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -64,11 +66,24 @@ Route::group(['prefix' => '/admin'], function(){
          Route::put('/brands/{brand}', [BrandsController::class, 'update'])->name('brands.update');
          Route::delete('/brands/{brand}', [BrandsController::class, 'destroy'])->name('brands.delete');
 
+          //product route
+          Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
+          Route::get('/products/create', [ProductsController::class, 'create'])->name('products.create');
+          Route::post('/products', [ProductsController::class, 'store'])->name('products.store');
+          Route::get('/products/{product}/edite', [ProductsController::class, 'edite'])->name('products.edite');
+          Route::put('/products/{product}', [ProductsController::class, 'update'])->name('products.update');
+          Route::delete('/products/{product}', [ProductsController::class, 'destroy'])->name('products.delete');
+
+
+
+
+        // Product sub category
+        Route::get('/product-subcategories', [ProductSubCategoryController::class, 'index'])->name('product-subcategories.index');
 
         // temp-images.create
         Route::post('/temp', [TempImagesController::class, 'create'])->name('temp-images.create');
 
-        Route::get('/getSlug',function(Request $request) {
+        Route::get('/getSlug',function(Request $request){
             $slug = '';
             if (!empty($request->title)) {
                 $slug = Str::slug($request->title);

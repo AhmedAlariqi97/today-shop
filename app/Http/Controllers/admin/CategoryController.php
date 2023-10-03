@@ -196,23 +196,23 @@ class CategoryController extends Controller
         ]);
     }
 
-    // Store the file input content in the session
-    public function storeFileContent(Request $request)
-    {
-        $fileContent = $request->input('file_content');
-        $request->session()->put('file_content', $fileContent);
+    // // Store the file input content in the session
+    // public function storeFileContent(Request $request)
+    // {
+    //     $fileContent = $request->input('file_content');
+    //     $request->session()->put('file_content', $fileContent);
 
-        return response()->json(['success' => true]);
-    }
+    //     return response()->json(['success' => true]);
+    // }
 
-    // Auto-complete functionality
-    public function autocomplete(Request $request)
-    {
-        $fileContent = $request->session()->get('file_content');
+    // // Auto-complete functionality
+    // public function autocomplete(Request $request)
+    // {
+    //     $fileContent = $request->session()->get('file_content');
 
-        // Perform auto-complete logic
+    //     // Perform auto-complete logic
 
-        return response()->json(['suggestions' => $fileContent]);
-    }
+    //     return response()->json(['suggestions' => $fileContent]);
+    // }
 
 }

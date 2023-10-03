@@ -37,16 +37,16 @@
 									<p>Brands</p>
 								</a>
 							</li>
-							<li class="nav-item">
-								<a href="products.html" class="nav-link">
-									<i class="nav-icon fas fa-tag"></i>
-									<p>Products</p>
-								</a>
-							</li>
+                            <li class="nav-item">
+                                <a href="{{ route('products.create') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-tag"></i>
+                                    <p>Products</p>
+                                </a>
+                            </li>
 
 							<li class="nav-item">
-								<a href="#" class="nav-link">
-									<!-- <i class="nav-icon fas fa-tag"></i> -->
+                                <a href="#" class="nav-link">
+                                    <!-- <i class="nav-icon fas fa-tag"></i> -->
 									<i class="fas fa-truck nav-icon"></i>
 									<p>Shipping</p>
 								</a>

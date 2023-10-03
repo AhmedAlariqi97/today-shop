@@ -47,7 +47,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="slug">Slug</label>
-                                <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug">
+                                <input type="text" readonly name="slug" id="slug" class="form-control" placeholder="Slug">
                                 <p></p>
                             </div>
 
@@ -166,18 +166,16 @@
     });
 
     $("#name").change(function() {
-        $element = $(this);
-        // $("button[type=submit]").prop('disabled',true);
+        element = $(this);
+        $("button[type=submit]").prop('disabled',true);
 
         $.ajax({
             url: '{{ route("getSlug") }}',
             type: 'get',
-            data: {
-                title: element.val()
-            },
+            data: {title: element.val()},
             dataType: 'json',
             success: function(response) {
-                // $("button[type=submit]").prop('disabled',false);
+                $("button[type=submit]").prop('disabled',false);
 
                 if (response["status"] == true) {
                     $("#slug").val(response["slug"]);

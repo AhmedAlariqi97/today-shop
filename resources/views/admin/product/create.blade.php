@@ -9,7 +9,7 @@
                 <h1>Create Product</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="products.html" class="btn btn-primary">Back</a>
+                <a href="{{ route ('products.index') }}" class="btn btn-primary">Back</a>
             </div>
         </div>
     </div>
@@ -29,13 +29,14 @@
                                     <div class="mb-3">
                                         <label for="title">Title</label>
                                         <input type="text" name="title" id="title" class="form-control" placeholder="Title">
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <label for="title">Slug</label>
-                                        <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug">
-                                        <p></p>
+                                        <input type="text" readonly name="slug" id="slug" class="form-control" placeholder="Slug">
+                                        <p class="error"></p>
                                     </div>
 
                                 </div>
@@ -58,6 +59,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row" id="product-gallery">
+
+                    </div>
                     <div class="card mb-3">
                         <div class="card-body">
                             <h2 class="h4 mb-3">Pricing</h2>
@@ -66,6 +70,7 @@
                                     <div class="mb-3">
                                         <label for="price">Price</label>
                                         <input type="text" name="price" id="price" class="form-control" placeholder="Price">
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -88,6 +93,7 @@
                                     <div class="mb-3">
                                         <label for="sku">SKU (Stock Keeping Unit)</label>
                                         <input type="text" name="sku" id="sku" class="form-control" placeholder="sku">
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -99,12 +105,16 @@
                                 <div class="col-md-12">
                                     <div class="mb-3">
                                         <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox" id="track_qty" name="track_qty" checked>
+                                            <input type="hidden" name="track_qty" value="No">
+                                            <input class="custom-control-input" type="checkbox" id="track_qty" name="track_qty" value="Yes" checked>
                                             <label for="track_qty" class="custom-control-label">Track Quantity</label>
+
                                         </div>
+                                        <p class="error"></p>
                                     </div>
                                     <div class="mb-3">
                                         <input type="number" min="0" name="qty" id="qty" class="form-control" placeholder="Qty">
+                                        <p class="error"></p>
                                     </div>
                                 </div>
                             </div>
@@ -137,16 +147,15 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <p></p>
+                                <p class="error"></p>
                             </div>
                             <div class="mb-3">
-                                <label for="category">Sub category</label>
+                                <label for="sub_category">Sub category</label>
                                 <select name="sub_category" id="sub_category" class="form-control">
                                     <option value="">Select a Sub Category</option>
 
 
                                 </select>
-                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -154,7 +163,7 @@
                         <div class="card-body">
                             <h2 class="h4 mb-3">Product brand</h2>
                             <div class="mb-3">
-                            <select name="category" id="category" class="form-control">
+                            <select name="brand" id="brand" class="form-control">
                                     <option value="">Select a brand</option>
 
                                     @if($brands->isNotEmpty())
@@ -163,7 +172,6 @@
                                         @endforeach
                                     @endif
                                 </select>
-                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -171,19 +179,22 @@
                         <div class="card-body">
                             <h2 class="h4 mb-3">Featured product</h2>
                             <div class="mb-3">
-                                <select name="status" id="status" class="form-control">
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
+                                <select name="is_featured" id="is_featured" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option>
                                 </select>
+                                <p class="error"></p>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
 
             <div class="pb-5 pt-3">
-                <button class="btn btn-primary">Create</button>
-                <a href="products.html" class="btn btn-outline-dark ml-3">Cancel</a>
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a href="{{ route ('products.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
             </div>
         </div>
     </form>
@@ -197,71 +208,39 @@
 <script>
     $("#productForm").submit(function(event) {
         event.preventDefault();
-        var element = $(this);
+        var fromArray = $(this).serializeArray();
         $("button[type=submit]").prop('disabled', true);
 
         $.ajax({
-            url: '{{ route("sub-categories.store") }}',
+            url: '{{ route("products.store") }}',
             type: 'post',
-            data: element.serializeArray(),
+            data: fromArray,
             dataType: 'json',
             success: function(response) {
                 $("button[type=submit]").prop('disabled', false);
 
                 if (response["status"] == true) {
 
-                    window.location.href = "{{ route('sub-categories.index') }}";
-
-                    $("#name").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback').html("");
-
-                    $("#slug").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback').html("");
-
-                    $("#category").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback').html("");
 
                 } else {
 
                     var errors = response['errors'];
 
-                    if (errors['name']) {
-                        $("#name").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['name']);
-                    } else {
-                        $("#name").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback').html("");
-                    }
+                    // simple code for all input
+                    $(".error").removeClass('invalid-feedback').html('');
+                    $("input[type='text'], select, input[type='number']").removeClass('in-invalid');
 
-                    if (errors['slug']) {
-                        $("#slug").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['slug']);
-                    } else {
-                        $("#slug").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback').html("");
-                    }
-
-                    if (errors['category']) {
-                        $("#category").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['category']);
-                    } else {
-                        $("#category").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback').html("");
-                    }
+                    $.each(errors, function(key,value){
+                        $(`#${key}`).addClass('is-invalid')
+                        .siblings('p')
+                        .addClass('invalid-feedback')
+                        .html(value);
+                    });
                 }
 
 
             },
-            error: function(jqXHR, exception) {
+            error: function() {
                 console.log("something went wrong");
             }
         });
@@ -269,8 +248,8 @@
     });
 
     $("#title").change(function() {
-        $element = $(this);
-        // $("button[type=submit]").prop('disabled',true);
+        element = $(this);
+        $("button[type=submit]").prop('disabled',true);
 
         $.ajax({
             url: '{{ route("getSlug") }}',
@@ -278,7 +257,7 @@
             data: {title: element.val()},
             dataType: 'json',
             success: function(response) {
-                // $("button[type=submit]").prop('disabled',false);
+                $("button[type=submit]").prop('disabled',false);
 
                 if (response["status"] == true) {
                     $("#slug").val(response["slug"]);
@@ -303,7 +282,7 @@
 
                 $("#sub_category").find("option").not(":first").remove();
                 $.each(response["subCategories"],function(key,item){
-                    $("#sub_category").append(`<option ='{item.id}'>${item.name}</option>`)
+                    $("#sub_category").append(`<option value='${item.id}'>${item.name}</option>`)
                 });
             },
             error: function(){
@@ -311,6 +290,36 @@
             }
         });
 
+    });
+
+    Dropzone.autoDiscover = false;
+    const dropzone = $("#image").dropzone({
+        url: "{{ route('temp-images.create') }}",
+        maxFiles: 10,
+        paramName: 'image',
+        addRemoveLinks: true,
+        acceptedFiles: "image/jpeg,image/png,image/gif,imgae/svg",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(file, response) {
+            // $("#image_id").val(response.image_id);
+            //console.log(response);
+            var html = `
+            <div class="col-sm-3">
+                <div class="card">
+                    <input type="hidden" name="image-array[]" value="${response.image_id}">
+                    <img src="${response.ImagePath}" class="card-img-top" alt="">
+                    <div class="card-body">
+                        <a href="#" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+
+            `;
+
+            $("#product-gallery").append(html);
+        }
     });
 
     // $(document).ready(function() {

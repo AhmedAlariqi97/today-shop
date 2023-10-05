@@ -5,30 +5,31 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
 {
     public function index (Request $request) {
-        // $brands = Brand::latest();
 
-        // if (!empty($request->get('keyword'))) {
-        //     $brands = $brands->where('name','like','%'.$request->get('keyword').'%');
-        // }
+        $products = Product::latest()->paginate();
 
-        // $brands = $brands->paginate(10);
-        // // $data['categories'] = $categories;
-        // return View('admin.brand.list',compact('brands'));
+        if (!empty($request->get('keyword'))) {
+            $products = $products->where('name','like','%'.$request->get('keyword').'%');
+        }
+
+        // $products = $products->paginate(10);
+        $data['products'] = $products;
+        return View('admin.product.list',$data);
 
     }
 
     public function create () {
         $categories = Category::orderBy('name','ASC')->get();
-        $subCategories = SubCategory::orderBy('name','ASC')->get();
         $brands = Brand::orderBy('name','ASC')->get();
         $data['categories'] = $categories;
-        $data['subCategories'] = $subCategories;
         $data['brands'] = $brands;
 
 
@@ -37,35 +38,59 @@ class ProductsController extends Controller
 
     public function store (Request $request) {
 
-        // $validator = Validator::make($request->all(),[
-        //     'name' => 'required',
-        //     'slug' => 'required|unique:brands'
-        // ]);
+        $rules = [
+            'title' => 'required',
+            'slug' => 'required|unique:products',
+            'price' => 'required|numeric',
+            'sku' => 'required|unique:products',
+            'track_qty' => 'required|in:Yes,No',
+            'category' => 'required|numeric',
+            'is_featured' => 'required|in:Yes,No',
 
-        // if ($validator->passes()) {
+        ];
 
-        //     $brand = new Brand();
-        //     $brand->name = $request->name;
-        //     $brand->slug = $request->slug;
-        //     $brand->status = $request->status;
-        //     $brand->save();
+        if(!empty($request->track_qty) && $request->track_qty == 'Yes'){
+
+            $rules['qty'] = 'required|numeric';
+        }
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if ($validator->passes()) {
+
+            $products = new Product();
+            $products->title = $request->title;
+            $products->slug = $request->slug;
+            $products->description = $request->description;
+            $products->price = $request->price;
+            $products->compare_price = $request->compare_price;
+            $products->sku = $request->sku;
+            $products->barcode = $request->barcode;
+            $products->track_qty = $request->track_qty;
+            $products->qty = $request->qty;
+            $products->status = $request->status;
+            $products->category_id = $request->category;
+            $products->sub_category_id = $request->sub_category;
+            $products->brand_id = $request->brand;
+            $products->is_featured = $request->is_featured;
+            $products->save();
 
 
 
 
-        //     $request->session()->flash('success','Brand added successful');
+            $request->session()->flash('success','Product added successful');
 
-        //     return response()->json([
-        //         'status' => true,
-        //         'message' => 'Brand added successful'
-        //     ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Product added successful'
+            ]);
 
-        // } else {
-        //     return response()->json([
-        //         'status' => false,
-        //         'errors' => $validator->errors()
-        //     ]);
-        // }
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
 
     }
 

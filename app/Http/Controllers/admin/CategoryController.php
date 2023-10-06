@@ -114,8 +114,8 @@ class CategoryController extends Controller
 
         $validator = Validator::make($request->all(),[
             'name' => 'required',
-            // 'slug' => 'required|unique:categories,slug'.$category->id.',id'
-            'slug' => 'required'
+            'slug' => 'required|unique:categories,slug'.$category->id.',id'
+            // 'slug' => 'required'
         ]);
 
         if ($validator->passes()) {

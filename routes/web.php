@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\BrandsController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\ProductImagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
@@ -82,6 +83,10 @@ Route::group(['prefix' => '/admin'], function(){
 
         // temp-images.create
         Route::post('/temp', [TempImagesController::class, 'create'])->name('temp-images.create');
+
+         // product-images from productImagesController
+        Route::post('/product-images/update', [ProductImagesController::class, 'update'])->name('product-images.update');
+        Route::delete('/product-images', [ProductImagesController::class, 'destroy'])->name('product-images.delete');
 
         Route::get('/getSlug',function(Request $request){
             $slug = '';

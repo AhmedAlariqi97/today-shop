@@ -66,6 +66,17 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="card mb-3 col-md-6">
+                        <div class="card-body">
+                            <h2 class="h4 mb-3">Featured Category</h2>
+                            <div class="mb-3">
+                                <select name="is_featured" id="is_featured" class="form-control">
+                                    <option {{ ($category->is_featured == 'Yes' ) ? 'selected' : '' }} value="Yes">Yes</option>
+                                    <option {{ ($category->is_featured == 'No' ) ? 'selected' : '' }} value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
 
                     </div>
                 </div>

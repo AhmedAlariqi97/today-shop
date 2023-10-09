@@ -48,6 +48,7 @@ class SubCategoryController extends Controller
             $subcategory = new SubCategory();
             $subcategory->name = $request->name;
             $subcategory->slug = $request->slug;
+            $subcategory->is_featured = $request->is_featured;
             $subcategory->status = $request->status;
             $subcategory->category_id = $request->category;
             $subcategory->save();
@@ -134,6 +135,7 @@ class SubCategoryController extends Controller
 
             $subCategory->name = $request->name;
             $subCategory->slug = $request->slug;
+            $subCategory->is_featured = $request->is_featured;
             $subCategory->status = $request->status;
             $subCategory->category_id = $request->category;
             $subCategory->save();

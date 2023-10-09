@@ -72,6 +72,15 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="is_featured">Featured Category</label>
+                                <select name="is_featured" id="is_featured" class="form-control">
+                                    <option value="No">No</option>
+                                    <option value="Yes">Yes</option>
+                                </select>
+                            </div>
+                        </div>
 
                     </div>
                 </div>

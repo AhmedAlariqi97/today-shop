@@ -130,7 +130,7 @@
     });
 
     $("#name").change(function() {
-        $element = $(this);
+        element = $(this);
         // $("button[type=submit]").prop('disabled',true);
 
         $.ajax({

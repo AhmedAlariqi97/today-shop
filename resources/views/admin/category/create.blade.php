@@ -66,19 +66,20 @@
                                     <option value="1">Active</option>
                                     <option value="0">Block</option>
                                 </select>
+                                <h6>*condition for display in homepage</h6>
                             </div>
                         </div>
-                        <div class="card mb-3 col-md-6">
-                        <div class="card-body">
-                            <h2 class="h4 mb-3">Featured Category</h2>
+                        <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="is_featured">Featured Category</label>
                                 <select name="is_featured" id="is_featured" class="form-control">
                                     <option value="No">No</option>
                                     <option value="Yes">Yes</option>
                                 </select>
+                                <h6>*condition for display in homepage</h6>
                             </div>
                         </div>
-                        </div>
+
 
 
                     </div>

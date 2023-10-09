@@ -49,7 +49,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="slug">Slug</label>
-                                <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug"
+                                <input type="text" readonly name="slug" id="slug" class="form-control" placeholder="Slug"
                                   value="{{ $subCategory->slug }}">
                                 <p></p>
                             </div>
@@ -62,6 +62,15 @@
                                 <select name="status" id="status" class="form-control">
                                     <option {{ ($subCategory->status == 1 ) ? 'selected' : '' }} value="1">Active</option>
                                     <option {{ ($subCategory->status == 0 ) ? 'selected' : '' }} value="0">Block</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="is_featured">Featured Category</label>
+                                <select name="is_featured" id="is_featured" class="form-control">
+                                    <option {{ ($subCategory->is_featured == 'Yes' ) ? 'selected' : '' }} value="Yes">Yes</option>
+                                    <option {{ ($subCategory->is_featured == 'No' ) ? 'selected' : '' }} value="No">No</option>
                                 </select>
                             </div>
                         </div>
@@ -164,7 +173,7 @@
     });
 
     $("#name").change(function() {
-        $element = $(this);
+        element = $(this);
         // $("button[type=submit]").prop('disabled',true);
 
         $.ajax({

@@ -34,7 +34,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="slug">Slug</label>
-                                <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug"
+                                <input type="text" readonly name="slug" id="slug" class="form-control" placeholder="Slug"
                                   value="{{ $category->slug }}">
                                 <p></p>
                             </div>
@@ -64,19 +64,20 @@
                                     <option {{ ($category->status == 1 ) ? 'selected' : '' }} value="1">Active</option>
                                     <option {{ ($category->status == 0 ) ? 'selected' : '' }} value="0">Block</option>
                                 </select>
+                                <h6>*condition for display in homepage</h6>
                             </div>
                         </div>
-                        <div class="card mb-3 col-md-6">
-                        <div class="card-body">
-                            <h2 class="h4 mb-3">Featured Category</h2>
+                        <div class="col-md-6">
                             <div class="mb-3">
+                                <label for="is_featured">Featured Category</label>
                                 <select name="is_featured" id="is_featured" class="form-control">
                                     <option {{ ($category->is_featured == 'Yes' ) ? 'selected' : '' }} value="Yes">Yes</option>
                                     <option {{ ($category->is_featured == 'No' ) ? 'selected' : '' }} value="No">No</option>
                                 </select>
+                                <h6>*condition for display in homepage</h6>
                             </div>
                         </div>
-                        </div>
+
 
                     </div>
                 </div>
@@ -157,7 +158,7 @@
     });
 
     $("#name").change(function() {
-        $element = $(this);
+        element = $(this);
         // $("button[type=submit]").prop('disabled',true);
 
         $.ajax({

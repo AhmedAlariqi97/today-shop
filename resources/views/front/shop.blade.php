@@ -103,30 +103,7 @@
 
                     <div class="card">
                         <div class="card-body">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    $0-$100
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $100-$200
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $200-$500
-                                </label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                                <label class="form-check-label" for="flexCheckChecked">
-                                    $500+
-                                </label>
-                            </div>
+                            <input type="text" class="js-range-slider" name="my_range" value="" />
                         </div>
                     </div>
                 </div>
@@ -135,14 +112,19 @@
                         <div class="col-12 pb-1">
                             <div class="d-flex align-items-center justify-content-end mb-4">
                                 <div class="ml-2">
-                                    <div class="btn-group">
+                                    <!-- <div class="btn-group">
                                         <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown">Sorting</button>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item" href="#">Latest</a>
                                             <a class="dropdown-item" href="#">Price High</a>
                                             <a class="dropdown-item" href="#">Price Low</a>
                                         </div>
-                                    </div>
+                                    </div> -->
+                                    <select name="sort" id="sort" class="form-control">
+                                        <option value="latest" {{ ($sort == 'latest') ? 'selected' : '' }}>Latest</option>
+                                        <option value="price_desc" {{ ($sort == 'price_desc') ? 'selected' : '' }}>Price High</option>
+                                        <option value="price_asc" {{ ($sort == 'price_asc') ? 'selected' : '' }}>Price Low</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -191,8 +173,8 @@
 
                         <div class="col-md-12 pt-5">
                             <nav aria-label="Page navigation example">
-                           {{--{{ $products->links() }}--}}
-                                <ul class="pagination justify-content-end">
+                           {{ $products->links() }}
+                                <!-- <ul class="pagination justify-content-end">
                                     <li class="page-item disabled">
                                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
                                     </li>
@@ -202,7 +184,7 @@
                                     <li class="page-item">
                                         <a class="page-link" href="#">Next</a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </nav>
                         </div>
                     </div>
@@ -218,7 +200,34 @@
 
 @section('customjs')
 <script>
+    // price filter
+    rangeSlider = $(".js-range-slider").ionRangeSlider({
+        type: "double",
+        min: 0,
+        max: 1000,
+        from: {{ ($priceMin) }},
+        step: 10,
+        to: {{ ($priceMax) }},
+        skin: "round",
+        max_postfix: "+",
+        prefix: "$",
+        onFinish: function() {
+            apply_filters()
+        }
+
+    });
+
+    // Saving it's instance to var
+    var slider = $(".js-range-slider").data("ionRangeSlider");
+
+
+    // brand filter
     $(".brand-label").change(function(){
+        apply_filters();
+    });
+
+     // Sorting
+     $("#sort").change(function(){
         apply_filters();
     });
 
@@ -234,7 +243,20 @@
         console.log(brands.toString());
 
         var url = '{{ url()->current() }}?';
-        window.location.href = url+'&brand='+brands.toString();
+
+        // Brand Filter
+        if (brands.length > 0) {
+            url += '&brand='+brands.toString();
+        }
+
+        // Price Range Filter
+        url += '&price_min='+slider.result.from+'&price_max='+slider.result.to;
+
+        // Sorting Filter
+        url += '&sort='+$("#sort").val()
+
+
+        window.location.href = url;
 
     }
 

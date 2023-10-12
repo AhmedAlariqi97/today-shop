@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\ProductImagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProductSubCategoryController;
 use App\Http\Controllers\ShopController;
@@ -33,6 +34,8 @@ use Illuminate\Support\Str;
 Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class,'index'])->name('front.shop');
 Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
+Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
+Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.addToCart');
 
 // Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
 

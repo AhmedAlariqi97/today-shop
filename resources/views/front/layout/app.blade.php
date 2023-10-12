@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><?php echo (!empty($title)) ? 'Title-' . $title : 'Home'; ?></title>
+    <title>Laravel Today Shop</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
 
@@ -36,7 +36,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/slick-theme.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/video-js.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/ion.rangeSlider.min.css')}}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/style.css')}}?v=<?php echo rand(111, 999); ?>" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/style.css')}}" />
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +45,7 @@
 
     <!-- Fav Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="#" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body data-instant-intensity="mousedown">
@@ -68,6 +69,7 @@
     <script src="{{ asset('front-assets/js/slick.min.js')}}"></script>
     <script src="{{ asset('front-assets/js/custom.js')}}"></script>
     <script>
+
         window.onscroll = function() {
             myFunction()
         };
@@ -82,6 +84,13 @@
                 navbar.classList.remove("sticky");
             }
         }
+
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+        });
+
     </script>
     @yield('customjs')
 </body>

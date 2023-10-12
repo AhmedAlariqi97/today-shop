@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use PhpParser\Builder\Function_;
+use PhpParser\Node\Expr\FuncCall;
 
 class ShopController extends Controller
 {
@@ -26,23 +28,27 @@ class ShopController extends Controller
 
         // 'DESC'
         // Appley Filter here
+        // Filter by Main Categories
         if (!empty($categorySlug)) {
             $category = Category::where('slug',$categorySlug)->first();
             $products = $products->where('category_id',$category->id);
             $categorySelected = $category->id;
         }
 
+        // Filter by Sub Categories
         if (!empty($subCategorySlug)) {
             $subCategory = SubCategory::where('slug',$subCategorySlug)->first();
             $products = $products->where('sub_category_id',$subCategory->id);
             $subCategorySelected = $subCategory->id;
         }
 
+        // Filter by Brands
         if(!empty($request->get('brand'))) {
             $brandsArray = explode(',',$request->get('brand'));
             $products = $products->whereIn('brand_id',$brandsArray);
         }
 
+        // Filter by Price's Rang
         if($request->get('price_max') != '' && $request->get('price_min') != '') {
             if ($request->get('price_max') == 1000) {
                 $products = $products->wherebetween('price',[intval($request->get('price_min')),
@@ -54,6 +60,7 @@ class ShopController extends Controller
 
         }
 
+        // Filter Or Sorting by Lates, DESC and ASC
         if ($request->get('sort') != '') {
             if ($request->get('sort') == 'latest') {
                 $products = $products->orderBy('id','DESC');
@@ -69,7 +76,7 @@ class ShopController extends Controller
 
 
         // $products = $products->get();
-        $products = $products->paginate(6);
+        $products = $products->paginate(12);
 
         $data['categories'] = $categories;
         $data['brands'] = $brands;
@@ -84,5 +91,26 @@ class ShopController extends Controller
 
 
         return View('front.shop',$data);
+    }
+
+    public function product($slug) {
+
+        $product = Product::where('slug',$slug)->with('product_images')->first();
+        if ($product == null) {
+            abort(404);
+        }
+
+        // Display Related products in Product_detials
+        $relatedProducts = [];
+        if ($product->related_products != '') {
+            $productArray = explode(',',$product->related_products);
+
+            $relatedProducts = Product::whereIn('id',$productArray)->with('product_images')->get();
+        }
+
+        $data['product'] = $product;
+        $data['relatedProducts'] = $relatedProducts;
+
+        return View('front.product_detials',$data);
     }
 }

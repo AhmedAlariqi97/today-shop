@@ -9,7 +9,7 @@
                 <h1>Edite Product</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <a href="{{ route ('brands.index') }}" class="btn btn-primary">Back</a>
+                <a href="{{ route ('products.index') }}" class="btn btn-primary">Back</a>
             </div>
         </div>
     </div>
@@ -42,9 +42,25 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
+                                        <label for="short_description">Short Description</label>
+                                        <textarea name="short_description" id="short_description" cols="30" rows="10" class="summernote" placeholder="short description">
+                                        {{ $product->short_description }}
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
                                         <label for="description">Description</label>
                                         <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description">
                                         {{ $product->description }}
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="shipping_returns">Shipping Returns</label>
+                                        <textarea name="shipping_returns" id="shipping_returns" cols="30" rows="10" class="summernote" placeholder="shipping returns">
+                                        {{ $product->shipping_returns }}
                                         </textarea>
                                     </div>
                                 </div>
@@ -132,6 +148,27 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Related Products</h2>
+                                        <div class="mb-3">
+                                            <select multiple class="related-product w-100" name="related_products[]" id="related_products">
+                                                @if (!empty($relatedProducts))
+                                                    @foreach ($relatedProducts as $relProduct)
+                                                        <option selected value="{{ $relProduct->id }}">{{ $relProduct->title }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                            <p class="error"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="card mb-3">
@@ -197,9 +234,11 @@
                                     <option {{ ($product->is_featured == 'Yes' ) ? 'selected' : '' }} value="Yes">Yes</option>
                                     <option {{ ($product->is_featured == 'No' ) ? 'selected' : '' }} value="No">No</option>
                                 </select>
+                                <p class="error"></p>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -308,6 +347,24 @@
                 console.log("Something Went Wrong");
             }
         });
+
+    });
+
+    // select2 for related products
+    $('.related-product').select2({
+
+        ajax: {
+            url: '{{ route("products.getProducts") }}',
+            dataType: 'json',
+            tags: true,
+            multiple: true,
+            minimumInputLength: 3,
+            processResults: function (data) {
+                return {
+                    results: data.tags
+                };
+            }
+        }
 
     });
 

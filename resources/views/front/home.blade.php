@@ -231,13 +231,13 @@
                 <div class="col-md-3">
                     <div class="card product-card">
                         <div class="product-image position-relative">
-                            <a href="" class="product-img">
+                            <a href="{{ route('front.product', $product->slug) }}" class="product-img">
                             @if (!empty($productImage->image))
                                <img class="card-img-top"
                                    src="{{ asset('upload/product/large/'.$productImage->image) }}" alt="">
                             @else
                                 <img class="card-img-top"
-                                   src="{{ asset('upload/product/large/'.$productImage->image) }}" alt="">
+                                     src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="">
                             @endif
 
                             </a>
@@ -281,13 +281,13 @@
                 <div class="col-md-3">
                     <div class="card product-card">
                         <div class="product-image position-relative">
-                            <a href="" class="product-img">
+                            <a href="{{ route('front.product', $product->slug) }}" class="product-img">
                             @if (!empty($productImage->image))
                                <img class="card-img-top"
                                    src="{{ asset('upload/product/large/'.$productImage->image) }}" alt="">
                             @else
                                 <img class="card-img-top"
-                                   src="{{ asset('upload/product/large/'.$productImage->image) }}" alt="">
+                                     src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="">
                             @endif
 
                             </a>

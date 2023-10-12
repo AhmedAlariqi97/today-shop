@@ -66,6 +66,9 @@ class ProductsController extends Controller
             $products->title = $request->title;
             $products->slug = $request->slug;
             $products->description = $request->description;
+            $products->short_description = $request->short_description;
+            $products->shipping_returns = $request->shipping_returns;
+            $products->related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
             $products->price = $request->price;
             $products->compare_price = $request->compare_price;
             $products->sku = $request->sku;
@@ -146,24 +149,37 @@ class ProductsController extends Controller
 
         $product = Product::find($Id);
 
-        $subCategories = SubCategory::where('category_id',$product->category_id)->get();
-
-        // Fetch product images
-        $productImages = ProductImage::where('product_id',$product->id)->get();
-
         if (empty($product)) {
             $request->session()->flash('error','Record not found');
             return redirect()->route('products.index');
         }
 
+        // Fetch product images
+        $productImages = ProductImage::where('product_id',$product->id)->get();
+
+        // Fetch Related products
+        $relatedProducts = [];
+        if ($product->related_products != '') {
+            $productArray = explode(',',$product->related_products);
+
+            $relatedProducts = Product::whereIn('id',$productArray)->get();
+        }
+
+        $subCategories = SubCategory::where('category_id',$product->category_id)->get();
+
+
+
+
+
         $categories = Category::orderBy('name','ASC')->get();
         $brands = Brand::orderBy('name','ASC')->get();
 
-        $data['product'] = $product;
         $data['categories'] = $categories;
+        $data['brands'] = $brands;
+        $data['product'] = $product;
         $data['subCategories'] = $subCategories;
         $data['productImages'] = $productImages;
-        $data['brands'] = $brands;
+        $data['relatedProducts'] = $relatedProducts;
 
 
         return View('admin.product.edite',$data);
@@ -207,6 +223,9 @@ class ProductsController extends Controller
             $product->title = $request->title;
             $product->slug = $request->slug;
             $product->description = $request->description;
+            $product->short_description = $request->short_description;
+            $product->shipping_returns = $request->shipping_returns;
+            $product->related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
             $product->sku = $request->sku;
@@ -273,5 +292,26 @@ class ProductsController extends Controller
             'status' => true,
             'message' => 'Product deleted successfully'
         ]);
+    }
+
+    public function getProducts (Request $request) {
+
+        $tempProduct = [];
+        if ($request->term != "") {
+            $products = Product::where('title','like','%'.$request->term.'%')->get();
+
+            if ($products != null) {
+                foreach ($products as $product) {
+                    $tempProduct[] = array('id' => $product->id, 'text' => $product->title);
+                }
+
+            }
+        }
+
+        return response()->json([
+            'tags' => $tempProduct,
+            'status' => true
+        ]);
+
     }
 }

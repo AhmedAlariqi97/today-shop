@@ -42,10 +42,23 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="mb-3">
+                                        <label for="short_description">Short Description</label>
+                                        <textarea name="short_description" id="short_description" cols="30" rows="10" class="summernote" placeholder="short description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
                                         <label for="description">Description</label>
                                         <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description"></textarea>
                                     </div>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="shipping_returns">Shipping and Returns</label>
+                                        <textarea name="shipping_returns" id="shipping_returns" cols="30" rows="10" class="summernote" placeholder="shipping_returns"></textarea>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -115,6 +128,23 @@
                                     <div class="mb-3">
                                         <input type="number" min="0" name="qty" id="qty" class="form-control" placeholder="Qty">
                                         <p class="error"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 card mb-3">
+                                    <div class="card-body">
+                                        <h2 class="h4 mb-3">Related Products</h2>
+                                        <div class="mb-3">
+                                            <select multiple class="related-product w-100" name="related_products[]" id="related_products">
+
+                                            </select>
+                                            <p class="error"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -273,7 +303,6 @@
     });
 
     // product sub category
-
     $("#category").change(function() {
         var category_id = $(this).val();
 
@@ -294,6 +323,24 @@
                 console.log("Something Went Wrong");
             }
         });
+
+    });
+
+    // select2 for related products
+    $('.related-product').select2({
+
+        ajax: {
+            url: '{{ route("products.getProducts") }}',
+            dataType: 'json',
+            tags: true,
+            multiple: true,
+            minimumInputLength: 3,
+            processResults: function (data) {
+                return {
+                    results: data.tags
+                };
+            }
+        }
 
     });
 

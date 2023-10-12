@@ -12,6 +12,8 @@
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/fontawesome-free/css/all.min.css')}}">
         <!-- Summernote bs4 -->
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/summernote/summernote.min.css')}}">
+        <!-- Select2 -->
+		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/select2/css/select2.min.css')}}">
 		<!-- Theme style -->
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/adminlte.min.css')}}">
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/custom.css')}}">
@@ -90,6 +92,8 @@
 		<script src="{{ asset('admin-assets/plugins/dropzone/min/dropzone.min.js')}}"></script>
         <!-- Summernote bs4-->
 		<script src="{{ asset('admin-assets/plugins/summernote/summernote.min.js')}}"></script>
+        <!-- Select2-->
+		<script src="{{ asset('admin-assets/plugins/select2/js/select2.min.js')}}"></script>
 		<!-- AdminLTE App -->
 		<script src="{{ asset('admin-assets/js/adminlte.min.js')}}"></script>
 		<!-- AdminLTE for demo purposes -->

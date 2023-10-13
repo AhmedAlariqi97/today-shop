@@ -274,9 +274,9 @@
             </div>
             <div class="row pb-3">
             @if($latestProducts->isNotEmpty())
-                @foreach($latestProducts as $latestproduct)
+                @foreach($latestProducts as $product)
                 @php
-                    $productImage = $latestproduct->product_images->first();
+                    $productImage = $product->product_images->first();
                 @endphp
                 <div class="col-md-3">
                     <div class="card product-card">
@@ -300,11 +300,11 @@
                             </div>
                         </div>
                         <div class="card-body text-center mt-3">
-                            <a class="h6 link" href="product.php">{{ $latestproduct->title }}</a>
+                            <a class="h6 link" href="product.php">{{ $product->title }}</a>
                             <div class="price mt-2">
-                                <span class="h5"><strong>${{ $latestproduct->price }}</strong></span>
-                                @if($latestproduct->compare_price > 0)
-                                <span class="h6 text-underline"><del>${{ $latestproduct->compare_price }}</del></span>
+                                <span class="h5"><strong>${{ $product->price }}</strong></span>
+                                @if($product->compare_price > 0)
+                                <span class="h6 text-underline"><del>${{ $product->compare_price }}</del></span>
                                 @endif
                             </div>
                         </div>

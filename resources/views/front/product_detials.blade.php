@@ -97,7 +97,7 @@
             </div>
         </div>
     </section>
-    @if($relatedProducts->isNotEmpty())
+    @if(!empty($relatedProducts))
     <section class="pt-5 section-8">
         <div class="container">
             <div class="section-title">
@@ -105,9 +105,9 @@
             </div>
             <div class="col-md-12">
                 <div id="related-products" class="carousel">
-                    @foreach($relatedProducts as $relatedProduct)
+                    @foreach($relatedProducts as $product)
                         @php
-                            $productImage = $relatedProduct->product_images->first();
+                            $productImage = $product->product_images->first();
                         @endphp
                         <div class="card product-card">
                             <div class="product-image position-relative">
@@ -123,18 +123,18 @@
                                 <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                 <div class="product-action">
-                                    <a class="btn btn-dark" href="#">
+                                    <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{ $product->id }});">
                                         <i class="fa fa-shopping-cart"></i> Add To Cart
                                     </a>
                                 </div>
                             </div>
                             <div class="card-body text-center mt-3">
-                                <a class="h6 link" href="">{{ $relatedProduct->title }}</a>
+                                <a class="h6 link" href="">{{ $product->title }}</a>
                                 <div class="price mt-2">
-                                    <span class="h5"><strong>${{ $relatedProduct->title }}</strong></span>
+                                    <span class="h5"><strong>${{ $product->price }}</strong></span>
 
-                                    @if($relatedProduct->compare_price > 0)
-                                    <span class="h6 text-underline"><del>${{ $relatedProduct->compare_price }}</del></span>
+                                    @if($product->compare_price > 0)
+                                    <span class="h6 text-underline"><del>${{ $product->compare_price }}</del></span>
                                     @endif
                                 </div>
                             </div>
@@ -151,21 +151,5 @@
 
 
 @section('customjs')
-   <script type="text/javascript">
-    function addToCart(id) {
-
-        $.ajax({
-            url: '{{ route("front.addToCart") }}',
-            type: 'post',
-            data: {id:id},
-            dataType: 'json',
-            success: function(response) {
-
-            }
-
-        });
-    }
-   </script>
-
 
 @endsection

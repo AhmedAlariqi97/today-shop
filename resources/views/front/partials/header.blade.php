@@ -10,7 +10,14 @@
 				</a>
 			</div>
 			<div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
-				<a href="account.php" class="nav-link text-dark">My Account</a>
+
+            @if(Auth::user())
+				<a href="{{ route('auth.profile') }}" class="nav-link text-dark">My Account</a>
+            @else
+            <a href="{{ route('auth.login') }}" class="nav-link text-dark">Login</a>
+            <a href="{{ route('auth.register') }}" class="nav-link text-dark">Register</a>
+            @endif
+
 				<form action="">
 					<div class="input-group">
 						<input type="text" placeholder="Search For Products" class="form-control" aria-label="Amount (to the nearest dollar)">

@@ -71,7 +71,7 @@
 
                 if (response["status"] == true) {
 
-                    window.location.href = "{{ route('front.login') }}";
+                    window.location.href = "{{ route('auth.login') }}";
 
                     $("#name").removeClass('is-invalid')
                         .siblings('p')

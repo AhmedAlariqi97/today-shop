@@ -24,14 +24,38 @@
                     </div>
                 </div>
                 @endif
+                @if (Session::has('error'))
+                <div class="col-md-12">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {!! Session::get('error') !!}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                @endif
             <div class="login-form">
-                <form action="" method="post" id="loginForm" name="loginForm">
+                <form action="{{ route('auth.authenticate')}}" method="post">
+                @csrf
                     <h4 class="modal-title">Login to Your Account</h4>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Email" required="required">
+                        <input type="text" value="{{ old('email') }}" name="email" id="email"
+                             class="form-control @error('email') is-invalid @enderror" placeholder="Email">
+
+                             @error('email')
+                               <p class="invalid-feedback">
+                                {{ $message }}
+                               </p>
+                            @enderror
                     </div>
+
                     <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Password" required="required">
+                        <input type="password" name="password" id="password"
+                               class="form-control @error('password') is-invalid @enderror" placeholder="Password">
+
+                               @error('password')
+                                    <p class="invalid-feedback">
+                                        {{ $message }}
+                                    </p>
+                                @enderror
                     </div>
                     <div class="form-group small">
                         <a href="#" class="forgot-link">Forgot Password?</a>
@@ -49,73 +73,4 @@
 
 
 @section('customjs')
-
-<script>
- $("#loginForm").submit(function(event) {
-        event.preventDefault();
-        var element = $(this);
-        $("button[type=submit]").prop('disabled', true);
-
-        $.ajax({
-            url: '{{ route("auth.login") }}',
-            type: 'post',
-            data: element.serializeArray(),
-            dataType: 'json',
-            success: function(response) {
-                $("button[type=submit]").prop('disabled', false);
-
-                if (response["status"] == true) {
-
-                    window.location.href = "{{ route('front.home') }}";
-
-
-                    $("#email").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback').html("");
-
-
-                    $("#password").removeClass('is-invalid')
-                        .siblings('p')
-                        .removeClass('invalid-feedback').html("");
-
-
-
-                } else {
-
-                    var errors = response['errors'];
-
-                    if (errors['email']) {
-                        $("#email").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['email']);
-                    } else {
-                        $("#email").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback').html("");
-                    }
-
-                    if (errors['password']) {
-                        $("#password").addClass('is-invalid')
-                            .siblings('p')
-                            .addClass('invalid-feedback').html(errors['password']);
-                    } else {
-                        $("#password").removeClass('is-invalid')
-                            .siblings('p')
-                            .removeClass('invalid-feedback').html("");
-                    }
-
-
-                }
-
-
-            },
-            error: function(jqXHR, exception) {
-                console.log("something went wrong");
-            }
-        });
-
-    });
-</script>
-
-
 @endsection

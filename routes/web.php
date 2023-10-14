@@ -35,17 +35,29 @@ use Illuminate\Support\Str;
 Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class,'index'])->name('front.shop');
 Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
-Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
-Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.addToCart');
-Route::post('/update-cart',[CartController::class,'updateCart'])->name('front.updateCart');
-Route::post('/delete-item',[CartController::class,'deleteItem'])->name('front.deleteItem');
 
 
-Route::get('/register',[AuthController::class,'register'])->name('auth.register');
-Route::post('/process-register',[AuthController::class,'processRegister'])->name('auth.processRegister');
-Route::get('/login',[AuthController::class,'login'])->name('auth.login');
+Route::group(['prefix' => '/auth'], function(){
 
-// Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
+    Route::group(['middleware' => 'guest'], function(){
+        Route::get('/login',[AuthController::class,'login'])->name('auth.login');
+        Route::post('/authenticate',[AuthController::class,'authenticate'])->name('auth.authenticate');
+        Route::get('/register',[AuthController::class,'register'])->name('auth.register');
+        Route::post('/process-register',[AuthController::class,'processRegister'])->name('auth.processRegister');
+
+    });
+
+    Route::group(['middleware' => 'auth'], function(){
+        Route::get('/profile',[AuthController::class,'profile'])->name('auth.profile');
+        Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+        Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
+        Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.addToCart');
+        Route::post('/update-cart',[CartController::class,'updateCart'])->name('front.updateCart');
+        Route::post('/delete-item',[CartController::class,'deleteItem'])->name('front.deleteItem');
+    });
+});
+
 
 Route::group(['prefix' => '/admin'], function(){
 

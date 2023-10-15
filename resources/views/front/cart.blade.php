@@ -62,7 +62,7 @@
                                                 @endif
                                                 <!-- <img src="images/product-1.jpg" width="" height=""> -->
 
-                                                <h2>{{ $item->title }}</h2>
+                                                <h2>{{ $item->name }}</h2>
                                             </div>
                                         </td>
                                         <td>${{ $item->price }}</td>

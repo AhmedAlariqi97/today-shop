@@ -26,7 +26,12 @@ class AuthController extends Controller
             if(Auth::attempt(['email' => $request->email,'password'=>
                  $request->password],$request->get('remember'))) {
 
-                 return redirect()->route('auth.profile');
+                    // get session url when user click on btn 
+                    if (session()->has('url.intended')) {
+                        return redirect(session()->get('url.intended'));
+                    }
+
+                    return redirect()->route('auth.profile');
             }
             else {
                 return redirect()->route('auth.login')

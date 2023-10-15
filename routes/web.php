@@ -57,6 +57,7 @@ Route::group(['prefix' => '/auth'], function(){
         Route::post('/delete-item',[CartController::class,'deleteItem'])->name('front.deleteItem');
 
         Route::get('/checkout',[CartController::class,'checkout'])->name('front.checkout');
+        Route::post('/process-checkout',[CartController::class,'processCheckout'])->name('front.processCheckout');
 
 
     });

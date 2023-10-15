@@ -11,7 +11,7 @@
 			</div>
 			<div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
 
-            @if(Auth::user())
+            @if(Auth::check())
 				<a href="{{ route('auth.profile') }}" class="nav-link text-dark">My Account</a>
             @else
             <a href="{{ route('auth.login') }}" class="nav-link text-dark">Login</a>

@@ -56,7 +56,7 @@
 @section('customjs')
 
 <script>
- $("#registerForm").submit(function(event) {
+    $("#registerForm").submit(function(event) {
         event.preventDefault();
         var element = $(this);
         $("button[type=submit]").prop('disabled', true);

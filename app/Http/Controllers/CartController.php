@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\CustomerAddress;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -189,12 +190,29 @@ class CartController extends Controller
                 'errors' => $validator->errors()
 
             ]);
-
-        } else {
-            return response()->json([
-                'status' => true,
-            ]);
         }
+
+        // Step-2 save user address
+        // $customerAddress = CustomerAddress::find();
+
+        $user = Auth::user();
+        CustomerAddress::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'user_id' => $user->id,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'country_id' => $request->country,
+                'address' => $request->address,
+                'apartment' => $request->apartment,
+                'city' => $request->city,
+                'state' => $request->state,
+                'zip' => $request->zip,
+            ]);
+
+
     }
 
 

@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Country;
 use App\Models\CustomerAddress;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
@@ -168,6 +169,7 @@ class CartController extends Controller
 
     public function processCheckout(Request $request) {
 
+         // Step-1 validate data
         $validator = Validator::make($request->all(),[
             'first_name' => 'required|min:5',
             'last_name' => 'required',
@@ -181,8 +183,6 @@ class CartController extends Controller
         ]);
 
         if ($validator->fails()) {
-
-            $request->session()->flash('success','Product added successful');
 
             return response()->json([
                 'status' => false,
@@ -212,7 +212,61 @@ class CartController extends Controller
                 'zip' => $request->zip,
             ]);
 
+        // Step-3 save data on order table
+        if ($request->payment_method == 'cod') {
 
+            $shipping = 0;
+            $discount = 0;
+            $subTotal = Cart::subtotal(2,'.','');
+            $grandTotal = $subTotal+$shipping;
+
+            $order = new Order;
+            $order->subtotal = $subTotal;
+            $order->shipping = $shipping;
+            $order->grand_total = $grandTotal;
+            $order->user_id = $user->id;
+            $order->first_name = $request->first_name;
+            $order->last_name = $request->last_name;
+            $order->email = $request->email;
+            $order->mobile = $request->mobile;
+            $order->address = $request->address;
+            $order->apartment = $request->apartment;
+            $order->state = $request->state;
+            $order->city = $request->city;
+            $order->zip = $request->zip;
+            $order->notes = $request->notes;
+            $order->country_id = $request->country;
+            $order->save();
+
+
+            // Step-4 save data on order items table
+            foreach (Cart::content() as $item) {
+                $orderItem = new OrderItem;
+                $orderItem->product_id = $item->id;
+                $orderItem->order_id = $order->id;
+                $orderItem->name = $item->name;
+                $orderItem->qty = $item->qty;
+                $orderItem->price = $item->price;
+                $orderItem->total = $item->price*$item->qty;
+                $orderItem->save();
+            }
+
+            session()->flash('success','You have successfully placed your order.');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Order Saved Successfully.',
+                'orderId' => $order->id
+
+            ]);
+
+        }
+
+
+    }
+
+    public function thankYou() {
+        return view('front.thanks');
     }
 
 

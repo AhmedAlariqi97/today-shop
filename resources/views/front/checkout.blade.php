@@ -212,7 +212,7 @@
                     $(".error").removeClass('invalid-feedback').html('');
                     $("input[type='text'], select, input[type='number']").removeClass('in-invalid');
 
-                    window.location.href = "{{ route('front.checkout') }}";
+                    window.location.href = "{{ route('front.thanks') }}";
 
                 } else {
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ProductImagesController;
 use App\Http\Controllers\admin\ProductsController;
+use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\AuthController;
@@ -110,6 +111,13 @@ Route::group(['prefix' => '/admin'], function(){
           Route::put('/products/{product}', [ProductsController::class, 'update'])->name('products.update');
           Route::delete('/products/{product}', [ProductsController::class, 'destroy'])->name('products.delete');
           Route::get('/get-products', [ProductsController::class, 'getProducts'])->name('products.getProducts');
+
+           //shipping route
+           Route::get('/shippings/create', [ShippingController::class, 'create'])->name('shippings.create');
+           Route::post('/shippings', [ShippingController::class, 'store'])->name('shippings.store');
+           Route::get('/shippings/{shipping}/edite', [ShippingController::class, 'edite'])->name('shippings.edite');
+           Route::put('/shippings/{shipping}', [ShippingController::class, 'update'])->name('shippings.update');
+           Route::delete('/shippings/{shippings}', [ShippingController::class, 'destroy'])->name('shippings.delete');
 
 
 

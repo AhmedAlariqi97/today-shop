@@ -160,11 +160,16 @@ class CartController extends Controller
             return redirect()->route('auth.login');
         }
 
+        $customerAddress = CustomerAddress::where('user_id',Auth::user()->id)->first();
+
         session()->forget('url.intended');
 
         $countries = Country::orderBy('name','ASC')->get();
 
-        return view('front.checkout',['countries' => $countries]);
+        return view('front.checkout',[
+            'countries' => $countries,
+            'customerAddress' => $customerAddress
+        ]);
     }
 
     public function processCheckout(Request $request) {
@@ -253,6 +258,8 @@ class CartController extends Controller
 
             session()->flash('success','You have successfully placed your order.');
 
+            Cart::destroy();
+
             return response()->json([
                 'status' => true,
                 'message' => 'Order Saved Successfully.',
@@ -265,8 +272,11 @@ class CartController extends Controller
 
     }
 
-    public function thankYou() {
-        return view('front.thanks');
+    public function thankYou($id) {
+
+        return view('front.thanks',[
+            'id' => $id
+        ]);
     }
 
 

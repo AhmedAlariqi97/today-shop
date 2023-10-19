@@ -60,6 +60,7 @@ Route::group(['prefix' => '/auth'], function(){
         Route::get('/checkout',[CartController::class,'checkout'])->name('front.checkout');
         Route::post('/process-checkout',[CartController::class,'processCheckout'])->name('front.processCheckout');
         Route::get('/thanks/{orderId}',[CartController::class,'thankYou'])->name('front.thankYou');
+        Route::post('/getOrderSummary',[CartController::class,'getOrderSummary'])->name('front.getOrderSummary');
 
 
     });

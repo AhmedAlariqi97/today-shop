@@ -143,11 +143,11 @@
                                 </div>
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
-                                    <div class="h6"><strong>${{ number_format($totalShippingCharge,2) }}</strong></div>
+                                    <div class="h6"><strong id="shippingAmount">${{ number_format($totalShippingCharge,2) }}</strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-2 summery-end">
                                     <div class="h5"><strong>Total</strong></div>
-                                    <div class="h5"><strong>${{ $grandTotal }}</strong></div>
+                                    <div class="h5"><strong id="grandTotal">${{ number_format($grandTotal,2) }}</strong></div>
                                 </div>
 
                             </div>
@@ -249,8 +249,28 @@
 
     });
 
+    $("#country").change(function() {
+        $.ajax({
+            url: '{{ route("front.getOrderSummary") }}',
+            type: 'post',
+            data: {country_id: $(this).val()},
+            dataType: 'json',
+            success: function(response) {
+
+                if (response.status == true) {
+                    $("#shippingAmount").html('$'+response.shippingCharge);
+                    $("#grandTotal").html('$'+response.grandTotal);
+                }
+            },
+            error: function(jqXHR, exception) {
+                console.log("something went wrong");
+            }
+        });
+
+    });
 
 
+    // checked payment method
     $("#payment_method_one").click(function(){
 
         if ($(this).is(":checked") == true) {
@@ -260,10 +280,10 @@
 
     $("#payment_method_two").click(function(){
 
-if ($(this).is(":checked") == true) {
-    $('#card-payment-form').removeClass('d-none');
-}
-});
+    if ($(this).is(":checked") == true) {
+        $('#card-payment-form').removeClass('d-none');
+    }
+    });
 </script>
 
 @endsection

@@ -7,6 +7,7 @@ use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ShippingCharge;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -166,9 +167,25 @@ class CartController extends Controller
 
         $countries = Country::orderBy('name','ASC')->get();
 
+        // calculate shipping here
+        $userCountry = $customerAddress->country_id;
+        $shippingInfo = ShippingCharge::where('country_id', $userCountry)->first();
+
+        $totalQty = 0;
+        $totalShippingCharge = 0;
+        $grandTotal = 0;
+        foreach (Cart::content() as $item) {
+            $totalQty += $item->qty;
+        }
+
+        $totalShippingCharge = $totalQty*$shippingInfo->amount;
+        $grandTotal = Cart::subtotal(2,'.','')+$totalShippingCharge;
+
         return view('front.checkout',[
             'countries' => $countries,
-            'customerAddress' => $customerAddress
+            'customerAddress' => $customerAddress,
+            'totalShippingCharge' => $totalShippingCharge,
+            'grandTotal' => $grandTotal
         ]);
     }
 

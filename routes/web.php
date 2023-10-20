@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\BrandsController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\DiscountCouponsController;
 use App\Http\Controllers\admin\ProductImagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\ShippingController;
@@ -61,6 +62,8 @@ Route::group(['prefix' => '/auth'], function(){
         Route::post('/process-checkout',[CartController::class,'processCheckout'])->name('front.processCheckout');
         Route::get('/thanks/{orderId}',[CartController::class,'thankYou'])->name('front.thankYou');
         Route::post('/getOrderSummary',[CartController::class,'getOrderSummary'])->name('front.getOrderSummary');
+        Route::post('/applyDiscount',[CartController::class,'applyDiscount'])->name('front.applyDiscount');
+        Route::post('/removeCoupon', [CartController::class, 'removeCoupon'])->name('front.removeCoupon');
 
 
     });
@@ -119,6 +122,14 @@ Route::group(['prefix' => '/admin'], function(){
            Route::get('/shippings/{shipping}/edite', [ShippingController::class, 'edite'])->name('shippings.edite');
            Route::put('/shippings/{shipping}', [ShippingController::class, 'update'])->name('shippings.update');
            Route::delete('/shippings/{shippings}', [ShippingController::class, 'destroy'])->name('shippings.delete');
+
+           //discount Coupons route
+           Route::get('/discountCoupons', [DiscountCouponsController::class, 'index'])->name('discount-coupons.index');
+           Route::get('/discountCoupons/create', [DiscountCouponsController::class, 'create'])->name('discount-coupons.create');
+           Route::post('/discountCoupons', [DiscountCouponsController::class, 'store'])->name('discount-coupons.store');
+           Route::get('/discountCoupons/{discountCoupon}/edite', [DiscountCouponsController::class, 'edite'])->name('discount-coupons.edite');
+           Route::put('/discountCoupons/{discountCoupon}', [DiscountCouponsController::class, 'update'])->name('discount-coupons.update');
+           Route::delete('/discountCoupons/{discountCoupon}', [DiscountCouponsController::class, 'destroy'])->name('discount-coupons.delete');
 
 
 

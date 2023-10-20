@@ -137,9 +137,13 @@
                                 </div>
                             @endforeach
 
-                            <div class="d-flex justify-content-between summery-end">
+                               <div class="d-flex justify-content-between summery-end">
                                     <div class="h6"><strong>Subtotal</strong></div>
                                     <div class="h6"><strong>${{ Cart::subtotal() }}</strong></div>
+                                </div>
+                                <div class="d-flex justify-content-between summery-end">
+                                    <div class="h6"><strong>Discount</strong></div>
+                                    <div class="h6"><strong id="discount">${{ $discount }}</strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
@@ -152,7 +156,24 @@
 
                             </div>
                         </div>
-
+                        <div class="input-group apply-coupan mt-4">
+                                <input type="text" name="discount_code" id="discount_code" placeholder="Coupon Code" class="form-control">
+                                <button class="btn btn-dark" type="button" id="apply-discount">Apply Coupon</button>
+                                <p class="error"></p>
+                        </div>
+                        <div class="mt-4" id="discount_message">
+                            @if(Session::has('code'))
+                                <strong>
+                                    {{ Session::get('code')->code }} -
+                                    @if(Session::get('code')->type == 'percent')
+                                        {{ Session::get('code')->discount_amount }}%
+                                    @else
+                                        ${{ Session::get('code')->discount_amount }}
+                                    @endif
+                                </strong>
+                                <a class="btn btn-sm btn-danger" id="remove-discount"><i class="fa fa-times"></i></a>
+                            @endif
+                        </div>
                         <div class="card payment-form ">
                         <h3 class="card-title h5 mb-3">Payment Method</h3>
                             <div class="mb-3">
@@ -182,6 +203,7 @@
                                 </div>
 
                             </div>
+
                             <div class="pt-4">
                                 <button type="submit" class="btn-dark btn btn-block w-100">Pay Now</button>
                             </div>
@@ -249,6 +271,8 @@
 
     });
 
+     // Apply shipping amount for any country method
+
     $("#country").change(function() {
         $.ajax({
             url: '{{ route("front.getOrderSummary") }}',
@@ -269,7 +293,59 @@
 
     });
 
+     // Apply discount coupons method
 
+    $("#apply-discount").click(function() {
+        $.ajax({
+            url: '{{ route("front.applyDiscount") }}',
+            type: 'post',
+            data: {code: $("#discount_code").val(), country_id: $("#country").val()},
+            dataType: 'json',
+            success: function(response) {
+                if (response.status == true) {
+                    $("#shippingAmount").html('$'+response.shippingCharge);
+                    $("#discount").html('$'+response.discount);
+                    $("#grandTotal").html('$'+response.grandTotal);
+
+                    window.location.href="{{ route('front.checkout') }}";
+
+
+                } else {
+
+                    $("#discount_message").html("<span class='text-danger'>"+response.message+"</span>");
+                }
+            },
+            error: function(jqXHR, exception) {
+                console.log("something went wrong");
+            }
+        });
+
+    });
+
+
+     // Apply remove discount method
+
+     $("#remove-discount").click(function() {
+        $.ajax({
+            url: '{{ route("front.removeCoupon") }}',
+            type: 'post',
+            data: {country_id: $("#country").val()},
+            dataType: 'json',
+            success: function(response) {
+                if (response.status == true) {
+                    $("#shippingAmount").html('$'+response.shippingCharge);
+                    $("#discount").html('$'+response.discount);
+                    $("#grandTotal").html('$'+response.grandTotal);
+
+                    window.location.href="{{ route('front.checkout') }}";
+                }
+            },
+            error: function(jqXHR, exception) {
+                console.log("something went wrong");
+            }
+        });
+
+    });
     // checked payment method
     $("#payment_method_one").click(function(){
 

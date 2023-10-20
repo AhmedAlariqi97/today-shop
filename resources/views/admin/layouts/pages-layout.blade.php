@@ -14,6 +14,8 @@
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/summernote/summernote.min.css')}}">
         <!-- Select2 -->
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/select2/css/select2.min.css')}}">
+         <!-- Date Time Picker -->
+		<link rel="stylesheet" href="{{ asset('admin-assets/css/datetimepicker.css')}}">
 		<!-- Theme style -->
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/adminlte.min.css')}}">
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/custom.css')}}">
@@ -94,6 +96,8 @@
 		<script src="{{ asset('admin-assets/plugins/summernote/summernote.min.js')}}"></script>
         <!-- Select2-->
 		<script src="{{ asset('admin-assets/plugins/select2/js/select2.min.js')}}"></script>
+         <!-- Date Time Picker -->
+         <script src="{{ asset('admin-assets/js/datetimepicker.js')}}"></script>
 		<!-- AdminLTE App -->
 		<script src="{{ asset('admin-assets/js/adminlte.min.js')}}"></script>
 		<!-- AdminLTE for demo purposes -->

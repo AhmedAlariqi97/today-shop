@@ -66,7 +66,6 @@ class BrandsController extends Controller
             return redirect()->route('brands.index');
         }
 
-
         return View('admin.brand.edite', compact('brand'));
     }
 

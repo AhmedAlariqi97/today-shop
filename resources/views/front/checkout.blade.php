@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="d-flex justify-content-between summery-end">
                                     <div class="h6"><strong>Discount</strong></div>
-                                    <div class="h6"><strong id="discount">${{ $discount }}</strong></div>
+                                    <div class="h6"><strong id="discountValue">${{ $discount }}</strong></div>
                                 </div>
                                 <div class="d-flex justify-content-between mt-2">
                                     <div class="h6"><strong>Shipping</strong></div>
@@ -161,8 +161,9 @@
                                 <button class="btn btn-dark" type="button" id="apply-discount">Apply Coupon</button>
                                 <p class="error"></p>
                         </div>
-                        <div class="mt-4" id="discount_message">
+                        <div class="mt-4" id="discount_message_wrapper">
                             @if(Session::has('code'))
+                            <div class="mt-4" id="discount_message">
                                 <strong>
                                     {{ Session::get('code')->code }} -
                                     @if(Session::get('code')->type == 'percent')
@@ -172,6 +173,7 @@
                                     @endif
                                 </strong>
                                 <a class="btn btn-sm btn-danger" id="remove-discount"><i class="fa fa-times"></i></a>
+                            </div>
                             @endif
                         </div>
                         <div class="card payment-form ">
@@ -304,15 +306,16 @@
             success: function(response) {
                 if (response.status == true) {
                     $("#shippingAmount").html('$'+response.shippingCharge);
-                    $("#discount").html('$'+response.discount);
+                    $("#discountValue").html('$'+response.discount);
                     $("#grandTotal").html('$'+response.grandTotal);
 
-                    window.location.href="{{ route('front.checkout') }}";
+                    // window.location.href="{{ route('front.checkout') }}";
+                    $("#discount_message_wrapper").html(response.discountString);
 
 
                 } else {
 
-                    $("#discount_message").html("<span class='text-danger'>"+response.message+"</span>");
+                    $("#discount_message_wrapper").html("<span class='text-danger'>"+response.message+"</span>");
                 }
             },
             error: function(jqXHR, exception) {
@@ -325,27 +328,32 @@
 
      // Apply remove discount method
 
-     $("#remove-discount").click(function() {
-        $.ajax({
-            url: '{{ route("front.removeCoupon") }}',
-            type: 'post',
-            data: {country_id: $("#country").val()},
-            dataType: 'json',
-            success: function(response) {
-                if (response.status == true) {
-                    $("#shippingAmount").html('$'+response.shippingCharge);
-                    $("#discount").html('$'+response.discount);
-                    $("#grandTotal").html('$'+response.grandTotal);
+     $('body').on('click',"#remove-discount",function() {
+            $.ajax({
+                url: '{{ route("front.removeCoupon") }}',
+                type: 'post',
+                data: {country_id: $("#country").val()},
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == true) {
+                        $("#shippingAmount").html('$'+response.shippingCharge);
+                        $("#discountValue").html('$'+response.discount);
+                        $("#grandTotal").html('$'+response.grandTotal);
 
-                    window.location.href="{{ route('front.checkout') }}";
+                        // window.location.href="{{ route('front.checkout') }}";
+
+                        $("#discount_message_wrapper").html(response.discountString);
+                        $("#discount_code").val('');
+                    }
+                },
+                error: function(jqXHR, exception) {
+                    console.log("something went wrong");
                 }
-            },
-            error: function(jqXHR, exception) {
-                console.log("something went wrong");
-            }
-        });
+            });
+     });
 
-    });
+    //  $("#remove-discount").click(function() {
+    // });
     // checked payment method
     $("#payment_method_one").click(function(){
 

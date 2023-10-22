@@ -316,6 +316,8 @@ class CartController extends Controller
             $order->coupon_code = $couponCode;
             $order->coupon_id = $couponId;
             $order->grand_total = $grandTotal;
+            $order->payment_status = 'not paid';
+            $order->status = 'pending';
             $order->user_id = $user->id;
             $order->first_name = $request->first_name;
             $order->last_name = $request->last_name;

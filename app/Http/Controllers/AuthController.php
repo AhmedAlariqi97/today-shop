@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,12 +28,12 @@ class AuthController extends Controller
             if(Auth::attempt(['email' => $request->email,'password'=>
                  $request->password],$request->get('remember'))) {
 
-                    // get session url when user click on btn 
+                    // get session url when user click on btn
                     if (session()->has('url.intended')) {
                         return redirect(session()->get('url.intended'));
                     }
 
-                    return redirect()->route('auth.profile');
+                    return redirect()->route('auth.account.profile');
             }
             else {
                 return redirect()->route('auth.login')
@@ -86,12 +88,42 @@ class AuthController extends Controller
     }
 
     public function profile() {
-        return view('auth.profile');
+        return view('auth.account.profile');
     }
 
     public function logout() {
         Auth::logout();
         return redirect()->route('auth.login')
         ->with('success','You successfully logged out');;
+    }
+
+    // order's user
+
+    public function orders() {
+
+        $user = Auth::user();
+
+        $orders = Order::where('user_id',$user->id)->orderBy('created_at','DESC')->get();
+
+        $data['orders'] = $orders;
+
+        return view('auth.account.orders', $data);
+    }
+
+    // order detials
+
+    public function orderDetial($id) {
+
+        $user = Auth::user();
+
+        $orders = Order::where('user_id',$user->id)->where('id',$id)->first();
+
+        $orderItems = OrderItem::where('order_id',$id)->get();
+
+        $data['orders'] = $orders;
+
+        $data['orderItems'] = $orderItems;
+
+        return view('auth.account.order_detials', $data);
     }
 }

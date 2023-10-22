@@ -50,7 +50,9 @@ Route::group(['prefix' => '/auth'], function(){
     });
 
     Route::group(['middleware' => 'auth'], function(){
-        Route::get('/profile',[AuthController::class,'profile'])->name('auth.profile');
+        Route::get('/profile',[AuthController::class,'profile'])->name('account.profile');
+        Route::get('/my-orders',[AuthController::class,'orders'])->name('account.myOrders');
+        Route::get('/order-detial/{orderId}',[AuthController::class,'orderDetial'])->name('account.orderDetial');
         Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
         Route::get('/cart',[CartController::class,'cart'])->name('front.cart');

@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\BrandsController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\DiscountCouponsController;
+use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\ProductImagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\ShippingController;
@@ -133,7 +134,10 @@ Route::group(['prefix' => '/admin'], function(){
            Route::put('/discountCoupons/{discountCoupon}', [DiscountCouponsController::class, 'update'])->name('discount-coupons.update');
            Route::delete('/discountCoupons/{discountCoupon}', [DiscountCouponsController::class, 'destroy'])->name('discount-coupons.delete');
 
-
+           //orders route
+         Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+         Route::get('/orders/{id}', [OrderController::class, 'detial'])->name('orders.detial');
+         Route::post('/order/change-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
 
 
         // Product sub category

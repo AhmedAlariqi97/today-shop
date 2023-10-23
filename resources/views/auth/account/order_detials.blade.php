@@ -93,7 +93,15 @@
                                     <div class="row align-items-center">
                                         <div class="col-4 col-md-3 col-xl-2">
                                             <!-- Image -->
-                                            <a href="product.html"><img src="images/product-1.jpg" alt="..." class="img-fluid"></a>
+                                            @php
+                                                $productImage = getProductImage($orderItem->product_id);
+                                            @endphp
+
+                                            @if (!empty($productImage->image))
+                                            <img src="{{ asset('upload/product/small/'.$productImage->image) }}" class="img-fluid">
+                                            @else
+                                            <img src="{{ asset('admin-assets/img/default-150x150.png') }}" class="img-fluid">
+                                            @endif
                                         </div>
                                         <div class="col">
                                             <!-- Title -->
@@ -120,19 +128,19 @@
                             <ul>
                                 <li class="list-group-item d-flex">
                                     <span>Subtotal</span>
-                                    <span class="ms-auto">$128.00</span>
+                                    <span class="ms-auto">${{ number_format($orders->subtotal,2) }}</span>
                                 </li>
                                 <li class="list-group-item d-flex">
-                                    <span>Tax</span>
-                                    <span class="ms-auto">$0.00</span>
+                                    <span>Discount {{ (!empty($orders->coupon_code)) ? '('.$orders->coupon_code.')' : ''}}</span>
+                                    <span class="ms-auto">${{ number_format($orders->discount,2) }}</span>
                                 </li>
                                 <li class="list-group-item d-flex">
                                     <span>Shipping</span>
-                                    <span class="ms-auto">$8.00</span>
+                                    <span class="ms-auto">${{ number_format($orders->shipping,2) }}</span>
                                 </li>
                                 <li class="list-group-item d-flex fs-lg fw-bold">
-                                    <span>Total</span>
-                                    <span class="ms-auto">$136.00</span>
+                                    <span>Grand Total</span>
+                                    <span class="ms-auto">${{ number_format($orders->grand_total,2) }}</span>
                                 </li>
                             </ul>
                         </div>

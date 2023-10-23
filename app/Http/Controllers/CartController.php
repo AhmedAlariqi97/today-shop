@@ -267,7 +267,7 @@ class CartController extends Controller
 
             $shipping = 0;
             $discount = 0;
-            $couponId = '';
+            $couponId = NULL;
             $couponCode = '';
             $subTotal = Cart::subtotal(2,'.','');
             $grandTotal = $subTotal+$shipping;

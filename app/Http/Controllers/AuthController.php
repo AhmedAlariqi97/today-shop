@@ -33,7 +33,7 @@ class AuthController extends Controller
                         return redirect(session()->get('url.intended'));
                     }
 
-                    return redirect()->route('auth.account.profile');
+                    return redirect()->route('account.profile');
             }
             else {
                 return redirect()->route('auth.login')

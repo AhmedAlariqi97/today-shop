@@ -66,8 +66,10 @@
                                                 <span class="badge bg-danger">Pending</span>
                                                 @elseif ($order->status == 'shipped')
                                                 <span class="badge bg-info">Shipped</span>
-                                                @else
+                                                @elseif ($order->status == 'Delivered')
                                                 <span class="badge bg-success">Delivered</span>
+                                                @else
+                                                <span class="badge bg-danger">Canselled</span>
                                                 @endif
 											</td>
 											<td>${{ $order->grand_total }}</td>

@@ -51,10 +51,12 @@
                                             <td>
                                                 @if ($order->status == 'pending')
                                                 <span class="badge bg-danger">Pending</span>
-                                                @elseif ($order->status == 'shipping')
+                                                @elseif ($order->status == 'shipped')
                                                 <span class="badge bg-info">Shipped</span>
-                                                @else
+                                                @elseif ($order->status == 'Delivered')
                                                 <span class="badge bg-success">Delivered</span>
+                                                @else
+                                                <span class="badge bg-danger">Canselled</span>
                                                 @endif
 
 

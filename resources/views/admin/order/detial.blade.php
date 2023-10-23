@@ -19,6 +19,7 @@
 				<section class="content">
 					<!-- Default box -->
 					<div class="container-fluid">
+                    @include('admin.message')
 						<div class="row">
                             <div class="col-md-9">
                                 <div class="card">
@@ -47,8 +48,10 @@
                                                     <span class="badge bg-danger">Pending</span>
                                                     @elseif ($orders->status == 'shipped')
                                                     <span class="badge bg-info">Shipped</span>
-                                                    @else
+                                                    @elseif ($orders->status == 'Delivered')
                                                     <span class="badge bg-success">Delivered</span>
+                                                    @else
+                                                    <span class="badge bg-danger">Canselled</span>
                                                     @endif
                                                 <br>
                                             </div>
@@ -109,13 +112,13 @@
                                                     <option value="pending" {{ ($orders->status == 'pending') ? 'selected' : ''}}>Pending</option>
                                                     <option value="shipped" {{ ($orders->status == 'shipped') ? 'selected' : ''}}>Shipped</option>
                                                     <option value="delivered" {{ ($orders->status == 'delivered') ? 'selected' : ''}}>Delivered</option>
-                                                    <option value="conselled" {{ ($orders->status == 'conselled') ? 'selected' : ''}}>conselled</option>
+                                                    <option value="canselled" {{ ($orders->status == 'canselled') ? 'selected' : ''}}>Canselled</option>
                                                     <!-- <option value="">Cancelled</option> -->
                                                 </select>
                                             </div>
                                             <div class="mb-3">
                                                 <label for="">Shipped Date</label>
-                                                <input type="text" name="shipped_date" id="shipped_date" class="form-control">
+                                                <input value="{{ $orders->shipped_date }}" type="text" name="shipped_date" id="shipped_date" class="form-control">
                                             </div>
                                             <div class="mb-3">
                                                 <button type="submit" class="btn btn-primary">Update</button>

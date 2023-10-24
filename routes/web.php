@@ -34,9 +34,9 @@ use Illuminate\Support\Str;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-Route::get('/test', function () {
-    orderEmail(10);
-});
+// Route::get('/test', function () {
+//     orderEmail(10);
+// });
 
 Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class,'index'])->name('front.shop');
@@ -141,6 +141,7 @@ Route::group(['prefix' => '/admin'], function(){
          Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
          Route::get('/orders/{id}', [OrderController::class, 'detial'])->name('orders.detial');
          Route::post('/order/change-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
+         Route::post('/order/send-invoice-email/{id}', [OrderController::class, 'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
 
 
         // Product sub category

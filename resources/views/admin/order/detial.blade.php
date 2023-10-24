@@ -137,16 +137,19 @@
                                 </div>
                                 <div class="card">
                                     <div class="card-body">
-                                        <h2 class="h4 mb-3">Send Inovice Email</h2>
-                                        <div class="mb-3">
-                                            <select name="status" id="status" class="form-control">
-                                                <option value="">Customer</option>
-                                                <option value="">Admin</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-3">
-                                            <button class="btn btn-primary">Send</button>
-                                        </div>
+                                        <form action="" method="post" name="sendInvoiceEmail" id="sendInvoiceEmail">
+                                            <h2 class="h4 mb-3">Send Inovice Email</h2>
+                                            <div class="mb-3">
+                                                <select name="userType" id="userType" class="form-control">
+                                                    <option value="customer">Customer</option>
+                                                    <option value="admin">Admin</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <button type="submit" class="btn btn-primary">Send</button>
+                                            </div>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -206,5 +209,47 @@
         });
 
     });
+
+        //submit send invoice email orders
+
+        $("#sendInvoiceEmail").submit(function(event) {
+        event.preventDefault();
+        var element = $(this);
+        $("button[type=submit]").prop('disabled',true);
+
+        if (confirm("Are you sure you want to send email ?")) {
+            
+            $.ajax({
+                url: '{{ route("orders.sendInvoiceEmail",$orders->id) }}',
+                type: 'post',
+                data: element.serializeArray(),
+                dataType: 'json',
+                success: function(response) {
+                    $("button[type=submit]").prop('disabled',false);
+
+                    if (response["status"] == true) {
+
+                        window.location.href="{{ route('orders.detial',$orders->id) }}";
+
+                    } else {
+
+                        if (response['notFound'] == true) {
+                            window.location.href="{{ route('orders.index') }}";
+                            return false;
+                        }
+
+                        var errors = response['errors'];
+
+                    }
+
+
+                },
+                error: function(jqXHR, exception) {
+                    console.log("something went wrong");
+                }
+            });
+            }
+
+        });
 </script>
 @endsection

@@ -34,6 +34,14 @@
                                                 Phone: {{ $orders->mobile}}<br>
                                                 Email: {{ $orders->email}}
                                             </address>
+                                            <br>
+                                            <strong>Shipped Date</strong><br>
+                                                    @if(!empty($orders->shipped_date))
+                                                       {{ \Carbon\Carbon::parse($orders->shipped_date)->format('d M,Y') }}
+                                                    @else
+                                                        n/a
+                                                    @endif
+
                                             </div>
 
 
@@ -118,7 +126,7 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="">Shipped Date</label>
-                                                <input value="{{ $orders->shipped_date }}" type="text" name="shipped_date" id="shipped_date" class="form-control">
+                                                <input value="{{ $orders->shipped_date }}" type="text" name="shipped_date" id="shipped_date" class="form-control" placeholder="Shipped Date">
                                             </div>
                                             <div class="mb-3">
                                                 <button type="submit" class="btn btn-primary">Update</button>

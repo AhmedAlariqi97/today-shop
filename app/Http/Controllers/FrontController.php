@@ -17,4 +17,14 @@ class FrontController extends Controller
 
         return View('front.home',$data);
     }
+
+    public function addToWishlist(Request $request) {
+
+    }
+
+    public function wishlist() {
+
+    }
 }
+
+

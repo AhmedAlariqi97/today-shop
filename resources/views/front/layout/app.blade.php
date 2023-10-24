@@ -91,6 +91,7 @@
                 }
         });
 
+        // add to cart
         function addToCart(id) {
 
             $.ajax({
@@ -101,6 +102,26 @@
                 success: function(response) {
                     if (response.status == true){
                         window.location.href= "{{ route('front.cart') }}";
+                    } else {
+                        alert(response.message);
+                    }
+
+                }
+
+            });
+        }
+
+        // add to cart
+        function addToWishlist(id) {
+
+            $.ajax({
+                url: '{{ route("front.addToWishlist") }}',
+                type: 'post',
+                data: {id:id},
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == true){
+                        window.location.href= "{{ route('front.wishlist') }}";
                     } else {
                         alert(response.message);
                     }

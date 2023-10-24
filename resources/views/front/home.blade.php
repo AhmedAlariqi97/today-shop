@@ -241,7 +241,7 @@
                             @endif
 
                             </a>
-                            <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                            <a class="whishlist" href="javascript:void(0)" onclick="addToWishlist({{ $product->id }});"><i class="far fa-heart"></i></a>
 
                             <div class="product-action">
                                  @if (Auth::check())
@@ -298,7 +298,7 @@
                             @endif
 
                             </a>
-                            <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                            <a class="whishlist" href="javascript:void(0)" onclick="addToWishlist({{ $product->id }});"><i class="far fa-heart"></i></a>
 
                             <div class="product-action">
                                 @if (Auth::check())

@@ -13,6 +13,7 @@ use PhpParser\Node\Expr\FuncCall;
 class ShopController extends Controller
 {
     public function index(Request $request, $categorySlug = null, $subCategorySlug = null) {
+
         $categorySelected = '';
         $subCategorySelected = '';
         $brandsArray = [];
@@ -58,6 +59,12 @@ class ShopController extends Controller
                 intval($request->get('price_max'))]);
             }
 
+        }
+
+        // search header input
+        if (!empty($request->get('search'))) {
+
+            $products = $products->where('title','like','%'.$request->get('search').'%');
         }
 
         // Filter Or Sorting by Lates, DESC and ASC

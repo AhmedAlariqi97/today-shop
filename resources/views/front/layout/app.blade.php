@@ -115,13 +115,13 @@
         function addToWishlist(id) {
 
             $.ajax({
-                url: '{{ route("front.addToWishlist") }}',
+                url: '{{ route("account.addToWishlist") }}',
                 type: 'post',
                 data: {id:id},
                 dataType: 'json',
                 success: function(response) {
                     if (response.status == true){
-                        window.location.href= "{{ route('front.wishlist') }}";
+                        window.location.href= "{{ route('account.wishlist') }}";
                     } else {
                         alert(response.message);
                     }

@@ -77,7 +77,7 @@ class CartController extends Controller
     }
 
     public function cart() {
-        
+
         $cartContent = Cart::content();
 
         // dd($cartContent);
@@ -344,6 +344,17 @@ class CartController extends Controller
                 $orderItem->price = $item->price;
                 $orderItem->total = $item->price*$item->qty;
                 $orderItem->save();
+
+                // update product Stock
+                $productData = Product::find($item->id);
+
+                if ($productData->track_qty == 'Yes') {
+                    $currentQty = $productData->qty;
+                    $updateQty = $currentQty-$item->qty;
+                    $productData->qty = $updateQty;
+                    $productData->save();
+                }
+
             }
 
             // Send order email

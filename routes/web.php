@@ -66,6 +66,7 @@ Route::group(['prefix' => '/auth'], function(){
 
         Route::get('/wishlist',[FrontController::class,'wishlist'])->name('account.wishlist');
         Route::post('/add-to-wishlist',[FrontController::class,'addToWishlist'])->name('account.addToWishlist');
+        Route::post('/remove-product-from-wishlist',[FrontController::class,'removeProductFromWishlist'])->name('account.removeProductFromWishlist');
 
         Route::get('/checkout',[CartController::class,'checkout'])->name('front.checkout');
         Route::post('/process-checkout',[CartController::class,'processCheckout'])->name('front.processCheckout');

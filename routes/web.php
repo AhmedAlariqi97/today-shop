@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\DiscountCouponsController;
 use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\PagesController;
 use App\Http\Controllers\admin\ProductImagesController;
 use App\Http\Controllers\admin\ProductsController;
 use App\Http\Controllers\admin\ShippingController;
@@ -42,6 +43,7 @@ use Illuminate\Support\Str;
 Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class,'index'])->name('front.shop');
 Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
+Route::get('/page/{slug}',[FrontController::class,'page'])->name('front.page');
 
 
 Route::group(['prefix' => '/auth'], function(){
@@ -157,6 +159,14 @@ Route::group(['prefix' => '/admin'], function(){
           Route::get('/users/{user}/edite', [UsersController::class, 'edite'])->name('users.edite');
           Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
           Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.delete');
+
+          //pages route
+          Route::get('/pages', [PagesController::class, 'index'])->name('pages.index');
+          Route::get('/pages/create', [PagesController::class, 'create'])->name('pages.create');
+          Route::post('/pages', [PagesController::class, 'store'])->name('pages.store');
+          Route::get('/pages/{page}/edite', [PagesController::class, 'edite'])->name('pages.edite');
+          Route::put('/pages/{page}', [PagesController::class, 'update'])->name('pages.update');
+          Route::delete('/pages/{page}', [PagesController::class, 'destroy'])->name('pages.delete');
 
 
         // Product sub category

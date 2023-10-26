@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pages;
 use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
@@ -97,6 +98,15 @@ class FrontController extends Controller
 
         }
 
+    }
+
+    public function page($slug) {
+
+        $page = Pages::where('slug',$slug)->first();
+
+        return View('front.page',[
+            'page' => $page
+        ]);
     }
 }
 

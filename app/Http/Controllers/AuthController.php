@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
+use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
@@ -89,30 +91,79 @@ class AuthController extends Controller
 
     public function profile() {
 
+        $userId = Auth::user()->id;
+
         $user = User::where('id',Auth::user()->id)->first();
 
+        $countries = Country::orderBy('name','ASC')->get();
+
+        $customerAddress = CustomerAddress::where('user_id',$userId)->first();
+
         return view('auth.account.profile',[
-            'user' => $user
+            'user' => $user,
+            'countries' => $countries,
+            'customerAddress' => $customerAddress
         ]);
     }
 
     public function updateProfile(Request $request) {
 
         $userId = Auth::user()->id;
+        $user = User::find($userId);
 
         $validator = Validator::make($request->all(),[
-            'name' => 'required',
+            'name' => 'required|min:3',
             'email' => 'required|email|unique:users,email,'.$userId.',id',
+            // 'email' => 'required|email|unique:users',
             'phone' => 'required'
         ]);
 
         if ($validator->passes()) {
 
-            $user = User::find('$userId');
             $user->name = $request->name;
             $user->email = $request->email;
             $user->phone = $request->phone;
             $user->save();
+
+
+            session()->flash('success','Your Profile updated successful');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User Profile updated successful'
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+    public function updateAddress(Request $request) {
+
+        $userId = Auth::user()->id;
+        $customerAddress = CustomerAddress::find($userId);
+
+        $validator = Validator::make($request->all(),[
+            'first_name' => 'required|min:5',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'country' => 'required',
+            'address' => 'required|min:30',
+            'city' => 'required',
+            'state' => 'required',
+            'zip' => 'required',
+            'mobile' => 'required'
+        ]);
+
+        if ($validator->passes()) {
+
+            $customerAddress->name = $request->name;
+            $customerAddress->email = $request->email;
+            $customerAddress->phone = $request->phone;
+            $customerAddress->save();
 
 
             session()->flash('success','Your Profile updated successful');

@@ -16,6 +16,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ProductSubCategoryController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\admin\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
@@ -148,6 +149,14 @@ Route::group(['prefix' => '/admin'], function(){
          Route::get('/orders/{id}', [OrderController::class, 'detial'])->name('orders.detial');
          Route::post('/order/change-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
          Route::post('/order/send-invoice-email/{id}', [OrderController::class, 'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
+
+          //user route
+          Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+          Route::get('/users/create', [UsersController::class, 'create'])->name('users.create');
+          Route::post('/users', [UsersController::class, 'store'])->name('users.store');
+          Route::get('/users/{user}/edite', [UsersController::class, 'edite'])->name('users.edite');
+          Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
+          Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.delete');
 
 
         // Product sub category

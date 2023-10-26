@@ -144,7 +144,7 @@ class AuthController extends Controller
     public function updateAddress(Request $request) {
 
         $userId = Auth::user()->id;
-        $customerAddress = CustomerAddress::find($userId);
+        // $customerAddress = CustomerAddress::find($userId);
 
         $validator = Validator::make($request->all(),[
             'first_name' => 'required|min:5',
@@ -160,17 +160,40 @@ class AuthController extends Controller
 
         if ($validator->passes()) {
 
-            $customerAddress->name = $request->name;
-            $customerAddress->email = $request->email;
-            $customerAddress->phone = $request->phone;
-            $customerAddress->save();
+            // $customerAddress->first_name = $request->first_name;
+            // $customerAddress->last_name = $request->last_name;
+            // $customerAddress->email = $request->email;
+            // $customerAddress->country = $request->country;
+            // $customerAddress->address = $request->address;
+            // $customerAddress->city = $request->city;
+            // $customerAddress->state = $request->state;
+            // $customerAddress->zip = $request->zip;
+            // $customerAddress->mobile = $request->mobile;
+            // $customerAddress->save();
+
+            
+            CustomerAddress::updateOrCreate(
+                ['user_id' => $userId],
+                [
+                    'user_id' => $userId,
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'email' => $request->email,
+                    'mobile' => $request->mobile,
+                    'country_id' => $request->country,
+                    'address' => $request->address,
+                    'apartment' => $request->apartment,
+                    'city' => $request->city,
+                    'state' => $request->state,
+                    'zip' => $request->zip,
+                ]);
 
 
-            session()->flash('success','Your Profile updated successful');
+            session()->flash('success','Your address data updated successful');
 
             return response()->json([
                 'status' => true,
-                'message' => 'User Profile updated successful'
+                'message' => 'User address data updated successful'
             ]);
 
         } else {

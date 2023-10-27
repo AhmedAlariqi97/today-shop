@@ -210,15 +210,15 @@
 
     });
 
-        //submit send invoice email orders
+    //submit send invoice email orders
 
-        $("#sendInvoiceEmail").submit(function(event) {
+    $("#sendInvoiceEmail").submit(function(event) {
         event.preventDefault();
         var element = $(this);
         $("button[type=submit]").prop('disabled',true);
 
         if (confirm("Are you sure you want to send email ?")) {
-            
+
             $.ajax({
                 url: '{{ route("orders.sendInvoiceEmail",$orders->id) }}',
                 type: 'post',
@@ -248,8 +248,9 @@
                     console.log("something went wrong");
                 }
             });
-            }
+        }
 
-        });
+    });
+
 </script>
 @endsection

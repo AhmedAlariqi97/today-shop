@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\PagesController;
 use App\Http\Controllers\admin\ProductImagesController;
 use App\Http\Controllers\admin\ProductsController;
+use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\SubCategoryController;
 use App\Http\Controllers\admin\TempImagesController;
@@ -44,6 +45,7 @@ Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class,'index'])->name('front.shop');
 Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
 Route::get('/page/{slug}',[FrontController::class,'page'])->name('front.page');
+Route::post('/send-contact-email', [FrontController::class, 'sendContactEmail'])->name('front.sendContactEmail');
 
 
 Route::group(['prefix' => '/auth'], function(){
@@ -53,6 +55,7 @@ Route::group(['prefix' => '/auth'], function(){
         Route::post('/authenticate',[AuthController::class,'authenticate'])->name('auth.authenticate');
         Route::get('/register',[AuthController::class,'register'])->name('auth.register');
         Route::post('/process-register',[AuthController::class,'processRegister'])->name('auth.processRegister');
+        Route::get('/forgot-password',[AuthController::class,'forgotPassword'])->name('auth.forgotPassword');
 
     });
 
@@ -62,6 +65,8 @@ Route::group(['prefix' => '/auth'], function(){
         Route::post('/update-address',[AuthController::class,'updateAddress'])->name('account.updateAddress');
         Route::get('/my-orders',[AuthController::class,'orders'])->name('account.myOrders');
         Route::get('/order-detial/{orderId}',[AuthController::class,'orderDetial'])->name('account.orderDetial');
+        Route::get('/show-change-password',[AuthController::class,'showChangePassword'])->name('account.showChangePassword');
+        Route::post('/change-password',[AuthController::class,'changePassword'])->name('account.changePassword');
         Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
         Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
@@ -167,6 +172,10 @@ Route::group(['prefix' => '/admin'], function(){
           Route::get('/pages/{page}/edite', [PagesController::class, 'edite'])->name('pages.edite');
           Route::put('/pages/{page}', [PagesController::class, 'update'])->name('pages.update');
           Route::delete('/pages/{page}', [PagesController::class, 'destroy'])->name('pages.delete');
+
+           //setting route
+          Route::get('/show-change-password',[SettingController::class,'showChangePassword'])->name('admin.showChangePassword');
+          Route::post('/change-password',[SettingController::class,'changePassword'])->name('admin.changePassword');
 
 
         // Product sub category

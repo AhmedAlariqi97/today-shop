@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactEmail;
 use App\Models\Pages;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class FrontController extends Controller
 {
@@ -54,16 +58,16 @@ class FrontController extends Controller
         );
 
 
-       // save product on wishlist table
-    //    $wishlist = new Wishlist;
-    //    $wishlist->user_id = Auth::user()->id;
-    //    $wishlist->product_id = $request->id;
-    //    $wishlist->save();
+        // save product on wishlist table
+        //    $wishlist = new Wishlist;
+        //    $wishlist->user_id = Auth::user()->id;
+        //    $wishlist->product_id = $request->id;
+        //    $wishlist->save();
 
-       return response()->json([
-        'status' => true,
-        'message' => '<div class="alert alert-success"><strong>"'.$product->title.'"</strong> added in your wishlist</div>'
-    ]);
+        return response()->json([
+            'status' => true,
+            'message' => '<div class="alert alert-success"><strong>"'.$product->title.'"</strong> added in your wishlist</div>'
+        ]);
 
     }
 
@@ -104,9 +108,51 @@ class FrontController extends Controller
 
         $page = Pages::where('slug',$slug)->first();
 
+        if($page == null) {
+            abort(404);
+        }
+
         return View('front.page',[
             'page' => $page
         ]);
+    }
+
+    public function sendContactEmail(Request $request) {
+
+        $validator = Validator::make($request->all(),[
+            'name' => 'required',
+            'email' => 'required|email',
+            'subject' => 'required|min:10'
+        ]);
+
+        if ($validator->passes()) {
+
+            $mailData = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'message' => $request->message,
+                'mail_subject' => 'You have received a contact email'
+            ];
+
+            $admin = User::where('id',1)->first();
+
+            Mail::to($admin->email)->send(new ContactEmail($mailData));
+
+
+            session()->flash('success','Your subject sended successful');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Your subject sended successful'
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
     }
 }
 

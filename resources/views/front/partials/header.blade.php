@@ -109,10 +109,37 @@
 
       			</ul>
       		</div>
-			<div class="right-nav py-0">
-				<a href="{{route('front.cart') }}" class="ml-3 d-flex pt-2">
-					<i class="fas fa-shopping-cart text-primary"></i>
-				</a>
+			<div class="d-flex py-0">
+                <div class="right-nav-heart mx-3">
+                    @if (Auth::check())
+                        <a href="{{route('account.wishlist') }}" class="ml-3 d-flex pt-2">
+                            <span class="heart-numbers">{{ getWishlistItemsNumber() }}</span>
+                            <i class="fas fa-heart text-primary"></i>
+                        </a>
+                    @else
+                        <a href="{{route('account.wishlist') }}" class="ml-3 d-flex pt-2">
+                            <span class="heart-numbers">0</span>
+                            <i class="fas fa-heart text-primary"></i>
+                        </a>
+                    @endif
+                </div>
+
+                <div class="right-nav-cart">
+                    @if (Auth::check())
+                        <a href="{{route('front.cart') }}" class="ml-3 d-flex pt-2">
+                            <span class="cart-numbers">{{ getCartItemsNumber() }}</span>
+                            <i class="fas fa-shopping-cart text-primary"></i>
+                        </a>
+                    @else
+                        <a href="{{route('front.cart') }}" class="ml-3 d-flex pt-2">
+                            <span class="cart-numbers">0</span>
+                            <i class="fas fa-shopping-cart text-primary"></i>
+                        </a>
+                    @endif
+                </div>
+
+
+
 			</div>
       	</nav>
   	</div>

@@ -23,13 +23,13 @@ class ProductFactory extends Factory
         $short_description = fake()->text(60);
         $shipping_returns = fake()->text();
 
-        $categories = [7,32,33,37,40];
+        $categories = [1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,20,22,25,28,30];
         $catRandKey = array_rand($categories);
 
-        $subCategories = [3,4,5,6,7,8];
+        $subCategories = [1,2,3,4,5,6,7,8,9,10];
         $subCatRandKey = array_rand($subCategories);
 
-        $brands = [2,3,4,5,6,7];
+        $brands = [1,2,3,4,5,6,7,8,9,10];
         $brandRandKey = array_rand($brands);
 
 

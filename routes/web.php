@@ -56,6 +56,9 @@ Route::group(['prefix' => '/auth'], function(){
         Route::get('/register',[AuthController::class,'register'])->name('auth.register');
         Route::post('/process-register',[AuthController::class,'processRegister'])->name('auth.processRegister');
         Route::get('/forgot-password',[AuthController::class,'forgotPassword'])->name('auth.forgotPassword');
+        Route::post('/process-forgot-password',[AuthController::class,'processForgotPassword'])->name('auth.processForgotPassword');
+        Route::get('/reset-password/{token}',[AuthController::class,'resetPassword'])->name('auth.resetPassword');
+        Route::post('/process-reset-password',[AuthController::class,'processResetPassword'])->name('auth.processResetPassword');
 
     });
 

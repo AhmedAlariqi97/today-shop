@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPasswordEmail;
 use App\Models\Country;
 use App\Models\CustomerAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Dflydev\DotAccessData\data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -295,5 +299,59 @@ class AuthController extends Controller
     public function forgotPassword(){
 
         return View('auth.forgot_password');
+    }
+
+    public function processForgotPassword(Request $request){
+
+        $validator = Validator::make($request->all(),[
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('auth.forgotPassword')->withInput()->withErrors($validator);
+        }
+
+        $token = Str::random(60);
+
+        \DB::table('password_reset_tokens')->where('email',$request->email)->delete();
+
+        \DB::table('password_reset_tokens')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => now()
+        ]);
+
+        // send email here
+
+        $user = User::where('email',$request->email)->first();
+
+        $formData = [
+            'token' => $token,
+            'user' => $user,
+            'subject' => 'You have requested to reset your password'
+        ];
+
+        Mail::to($request->email)->send(new ResetPasswordEmail($formData));
+
+        return redirect()->route('auth.forgotPassword')->with('success','Please check your inbox to reset your password>');
+
+
+    }
+
+    public function resetPassword($token) {
+
+        $tokenExits = \DB::table('password_reset_tokens')->where('token',$token)->first();
+
+        if ($tokenExits == null) {
+            return redirect()->route('auth.forgotPassword')->with('error','Invalid Request');
+        }
+
+        return View('auth.reset_password',[
+            'token' => $token
+        ]);
+    }
+
+    public function processResetPassword() {
+
     }
 }

@@ -8,7 +8,7 @@
             <div class="light-font">
                 <ol class="breadcrumb primary-color mb-0">
                     <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
-                    <li class="breadcrumb-item">Forgot Password</li>
+                    <li class="breadcrumb-item">Reset Password</li>
                 </ol>
             </div>
         </div>
@@ -33,21 +33,28 @@
                 </div>
                 @endif
             <div class="login-form">
-                <form action="{{ route('auth.processForgotPassword')}}" method="post">
+                <form action="{{ route('auth.processResetPassword')}}" method="post">
                 @csrf
-                    <h4 class="modal-title">Forgot Your Password</h4>
+                    <input type="hidden" name="token" value="{{ $token }}">
+                    <h4 class="modal-title">Reset Your Password</h4>
                     <div class="form-group">
-
-                        <input type="text" value="{{ old('email') }}" name="email" id="email"
-                             class="form-control @error('email') is-invalid @enderror" placeholder="Enter Your Email">
-                             @error('email')
+                        <input type="password" class="form-control @error('new_password') is-invalid @enderror" placeholder="New Password" id="new_password" name="new_password">
+                        @error('new_password')
+                               <p class="invalid-feedback">
+                                {{ $message }}
+                               </p>
+                            @enderror
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Password" id="password_confirmation" name="password_confirmation">
+                        @error('password_confirmation')
                                <p class="invalid-feedback">
                                 {{ $message }}
                                </p>
                             @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-dark btn-block btn-lg">Confirm Email</button>
+                    <button type="submit" class="btn btn-dark btn-block btn-lg">Submit</button>
                 </form>
                 <div class="text-center small">Do you have an account? <a href="{{ route('auth.login') }}">Login</a></div>
             </div>

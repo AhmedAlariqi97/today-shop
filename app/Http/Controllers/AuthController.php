@@ -351,7 +351,33 @@ class AuthController extends Controller
         ]);
     }
 
-    public function processResetPassword() {
+    public function processResetPassword(Request $request) {
 
+        $token = $request->token;
+
+        $tokenObj = \DB::table('password_reset_tokens')->where('token',$token)->first();
+
+        if ($tokenObj == null) {
+            return redirect()->route('auth.forgotPassword')->with('error','Invalid Request');
+        }
+
+        $user = User::where('email',$tokenObj->email)->first();
+
+        $validator = Validator::make($request->all(),[
+            'new_password' => 'required|min:5',
+            'password_confirmation' => 'required|same:new_password'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('auth.resetPassword',$token)->withErrors($validator);
+        }
+
+        User::where('id',$user->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        \DB::table('password_reset_tokens')->where('email',$user->email)->delete();
+
+        return redirect()->route('auth.login')->with('success','You have successfully updated your password');
     }
 }
